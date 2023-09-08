@@ -8,13 +8,36 @@
 const int SCREEN_WIDTH = 1080;
 const int SCREEN_HEIGHT = 720;
 
+float vertices[9] = {
+	//x   //y  //z
+	-0.5, -0.5, 0.0, //Bottom left
+	 0.5, -0.5, 0.0, //Bottom right
+	 0.0,  0.5, 0.0  //Top center
+};
+
+const char* vertexShaderSRC = R"(
+	#version 450
+	layout(location = 0) in vec3 vPos;
+	void main() {
+		gl_Position = vec4(vPos,1.0);
+	}
+)";
+const char* fragmentShaderSRC = R"(
+	#version 450
+	out vec4 FragColor;
+	void main(){
+		FragColor = vec4(1.0);
+	}
+)";
+
+
 unsigned int createVAO(float* vertexData, int numVertices)
 {
 	unsigned int vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	//Allocate space for + send vertex data to GPU.
-	glBufferData(GL_ARRAY_BUFFER, numVertices, vertexData, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * numVertices, vertexData, GL_STATIC_DRAW);
 
 	unsigned int vao;
 	glGenVertexArrays(1, &vao);
@@ -68,28 +91,6 @@ unsigned int createShaderProgram(const char* vertexShaderSource, const char* fra
 	return shaderProgram;
 }
 
-float vertices[9] = {
-	//x   //y  //z
-	-0.5, -0.5, 0.0, //Bottom left
-	 0.5, -0.5, 0.0, //Bottom right
-	 0.0,  0.5, 0.0  //Top center
-};
-
-const char* vertexShaderSRC = R"(
-	#version 450
-	layout(location = 0) in vec3 vPos;
-	void main() {
-		gl_Position = vec4(vPos,1.0);
-	}
-	)";
-const char* fragmentShaderSRC = R"(
-	#version 450
-	out vec4 FragColor;
-	void main(){
-		FragColor = vec4(1.0);
-	}
-	)";
-
 int main() {
 
 	printf("Initializing...");
@@ -111,7 +112,7 @@ int main() {
 	}
 	
 	unsigned int shader = createShaderProgram(vertexShaderSRC, fragmentShaderSRC);
-	unsigned int vao = createVAO(vertices, 9);
+	unsigned int vao = createVAO(vertices, 3);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
