@@ -10,9 +10,9 @@ const int SCREEN_HEIGHT = 720;
 
 float vertices[21] = {
 	//x   //y  //z   //r  //g  //b  //a
-	-0.5, -0.5, 0.0, 1.0, 0.7, 0.0, 1.0, //Bottom left
-	 0.5, -0.5, 0.0, 0.7, 1.0, 0.0, 1.0, //Bottom right
-	 0.0,  0.5, 0.0, 0.7, 0.0, 1.0, 1.0  //Top center
+	-0.5, -0.5, 0.0, 1.0, 0.55, 0.15, 1.0, //Bottom left
+	 0.5, -0.5, 0.0, 0.3, 0.85, 1, 1.0, //Bottom right
+	 0.0,  0.5, 0.0, 0.7, 0.125, 0.6, 1.0  //Top center
 };
 
 
@@ -41,7 +41,7 @@ const char* fragmentShaderSRC = R"(
 
 unsigned int createVAO(float* vertexData, int numVertices)
 {
-	int stride = 7;
+	int stride = 7; // how many attributes per vertex
 	unsigned int vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
