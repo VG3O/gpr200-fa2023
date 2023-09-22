@@ -18,11 +18,17 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 const int SCREEN_WIDTH = 1080;
 const int SCREEN_HEIGHT = 720;
 
-float vertices[9] = {
-	//x   //y  //z   
-	-0.5, -0.5, 0.0, 
-	 0.5, -0.5, 0.0,
-	 0.0,  0.5, 0.0 
+vg3o::Vertex vertices[4] = {
+	//x   //y  //z
+	{ 1.0, 1.0, 0.0, 1.0, 1.0 }, // top right
+	{ -1.0, 1.0, 0.0, 0.0, 1.0 }, // top left
+	{ -1.0, -1.0, 0.0, 0.0, 0.0 }, // bottom left
+	{ 1.0, -1.0, 0.0, 1.0, 0.0 } // bottom right
+};
+
+unsigned int indices[6] = {
+	0, 1, 2, // triangle 1
+	0, 2, 3 // triangle 2
 };
 
 float triangleColor[3] = { 1.0f, 0.5f, 0.0f };
@@ -36,7 +42,7 @@ int main() {
 		return 1;
 	}
 
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello Triangle", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Sunset... So Beautiful...", NULL, NULL);
 	if (window == NULL) {
 		printf("GLFW failed to create window");
 		return 1;
@@ -55,13 +61,12 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init();
 
-    unsigned int vao = vg3o::createVAO(vertices, 3);
+    unsigned int vao = vg3o::createVAO(vertices, 4, indices, 6);
 
 	vg3o::Shader shaderProgram("assets/vertexShader.vert", "assets/fragmentShader.frag");
 	shaderProgram.use();
 
 	glBindVertexArray(vao);
-
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
@@ -71,7 +76,7 @@ int main() {
 		shaderProgram.setVec3("_Color", triangleColor[0], triangleColor[1], triangleColor[2]);
 		shaderProgram.setFloat("_Brightness", triangleBrightness);
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 
 		//Render UI
 		{

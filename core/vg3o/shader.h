@@ -3,8 +3,13 @@
 #include <fstream>
 
 namespace vg3o {
+	struct Vertex {
+		float x, y, z;
+		float u, v;
+	};
+
 	std::string loadShaderSourceFromFile(const std::string& filePath);
-	unsigned int createVAO(float* vertexData, int numVertices);
+	unsigned int createVAO(Vertex* vertexData, int numVertices, unsigned int* indicesData, int numIndices);
 
 	class Shader {
 	public:
