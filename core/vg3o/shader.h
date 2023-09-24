@@ -20,6 +20,7 @@ namespace vg3o {
 		void setVec2(const std::string& name, float x, float y) const;
 		void setVec3(const std::string& name, float x, float y, float z) const;
 		void setVec4(const std::string& name, float x, float y, float z, float a) const;
+		void setVec3Array(const std::string& name, int arrLength, float arr[][3]) const;
 	private:
 		unsigned int m_id; 
 	};

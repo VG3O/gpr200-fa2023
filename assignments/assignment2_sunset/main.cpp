@@ -31,9 +31,25 @@ unsigned int indices[6] = {
 	0, 2, 3 // triangle 2
 };
 
-float triangleColor[3] = { 1.0f, 0.5f, 0.0f };
-float triangleBrightness = 1.0f;
-bool showImGUIDemoWindow = true;
+bool showImGUIDemoWindow = false;
+
+float SkyColor[4][3] = {
+	// day time colors
+	{1.0,0.17,0.0}, {0.0, 0.2, 0.3},
+	// night time colors
+	{0.85,0.0,0.1}, {0.05,0.05,0.05}
+};
+
+float SunColor[2][3] = {
+	{0.8,0.0,0.0}, {1,0.5,0.0}
+};
+
+float SunRadius = 0.3;
+float SunSpeed = 0.7;
+
+float HillColor[2][3] = {
+	{0.0,0.0,0.0}, { 0.2,0.05,0.0 }
+};
 
 int main() {
 	printf("Initializing...");
@@ -42,7 +58,7 @@ int main() {
 		return 1;
 	}
 
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Sunset... So Beautiful...", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Coldest Place in the Universe May Actually Be a Sussy Baka ?", NULL, NULL);
 	if (window == NULL) {
 		printf("GLFW failed to create window");
 		return 1;
@@ -73,9 +89,13 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//Set uniforms
-		shaderProgram.setVec3("_Color", triangleColor[0], triangleColor[1], triangleColor[2]);
-		shaderProgram.setFloat("_Brightness", triangleBrightness);
-
+		shaderProgram.setVec2("_Resolution", (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT);
+		shaderProgram.setFloat("_Time", (float)glfwGetTime());
+		shaderProgram.setFloat("_SunSpeed", SunSpeed);
+		shaderProgram.setFloat("_SunRadius", SunRadius);
+		shaderProgram.setVec3Array("_SkyColor", 4, SkyColor);
+		shaderProgram.setVec3Array("_SunColor", 2, SunColor);
+		shaderProgram.setVec3Array("_HillColor", 2, HillColor);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 
 		//Render UI
@@ -86,8 +106,30 @@ int main() {
 
 			ImGui::Begin("Settings");
 			ImGui::Checkbox("Show Demo Window", &showImGUIDemoWindow);
-			ImGui::ColorEdit3("Color", triangleColor);
-			ImGui::SliderFloat("Brightness", &triangleBrightness, 0.0f, 1.0f);
+
+			ImGui::Separator();
+			ImGui::Text("Daytime Colors");
+			ImGui::ColorEdit3("Top", SkyColor[1]);
+			ImGui::ColorEdit3("Bottom", SkyColor[0]);
+			
+			ImGui::Separator();
+			ImGui::Text("Nighttime Colors");
+			ImGui::ColorEdit3("Top", SkyColor[3]);
+			ImGui::ColorEdit3("Bottom", SkyColor[2]);
+
+			ImGui::Separator();
+			ImGui::Text("Sun Settings");
+			ImGui::ColorEdit3("Peak Color", SunColor[1]);
+			ImGui::ColorEdit3("Base Color", SunColor[0]);
+			ImGui::SliderFloat("Radius", &SunRadius, 0.1, 1.0);
+			ImGui::SliderFloat("Speed", &SunSpeed, 0.1, 10.0);
+
+			ImGui::Separator();
+			ImGui::Text("Hill Colors");
+			ImGui::ColorEdit3("Day Color", HillColor[1]);
+			ImGui::ColorEdit3("Night Color", HillColor[0]);
+			ImGui::Separator();
+
 			ImGui::End();
 			if (showImGUIDemoWindow) {
 				ImGui::ShowDemoWindow(&showImGUIDemoWindow);

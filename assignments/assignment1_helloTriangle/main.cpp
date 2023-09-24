@@ -24,7 +24,7 @@ const char* vertexShaderSRC = R"(
 	uniform float _Time;
 	void main() {
 		Color = vColor;
-		vec3 offset = vec3(0,sin(vPos.x + _Time),0)*0.5;
+		vec3 offset = vec3(0,sin(vPos.x + (_Time),0)*0.5;
 		gl_Position = vec4(vPos + offset,1.0);
 	}
 )";
@@ -34,7 +34,7 @@ const char* fragmentShaderSRC = R"(
 	in vec4 Color;
 	uniform float _Time;
 	void main(){
-		FragColor = Color * abs(sin(_Time));
+		FragColor = Color * abs(sin(_Time)*1.5);
 	}
 )";
 
