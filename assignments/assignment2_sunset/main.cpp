@@ -15,8 +15,8 @@ unsigned int createShaderProgram(const char* vertexShaderSource, const char* fra
 unsigned int createVAO(float* vertexData, int numVertices);
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 
-const int SCREEN_WIDTH = 1080;
-const int SCREEN_HEIGHT = 720;
+int SCREEN_WIDTH = 1080;
+int SCREEN_HEIGHT = 720;
 
 vg3o::Vertex vertices[4] = {
 	//x   //y  //z
@@ -147,5 +147,7 @@ int main() {
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+	SCREEN_WIDTH = width;
+	SCREEN_HEIGHT = height;
 }
 
