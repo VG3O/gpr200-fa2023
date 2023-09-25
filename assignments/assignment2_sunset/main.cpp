@@ -19,7 +19,7 @@ int SCREEN_WIDTH = 1080;
 int SCREEN_HEIGHT = 720;
 
 vg3o::Vertex vertices[4] = {
-	//x   //y  //z
+	//x   //y  //z	//u  //v
 	{ 1.0, 1.0, 0.0, 1.0, 1.0 }, // top right
 	{ -1.0, 1.0, 0.0, 0.0, 1.0 }, // top left
 	{ -1.0, -1.0, 0.0, 0.0, 0.0 }, // bottom left
@@ -35,12 +35,15 @@ bool showImGUIDemoWindow = false;
 
 float SkyColor[4][3] = {
 	// day time colors
-	{1.0,0.17,0.0}, {0.0, 0.2, 0.3},
+	// bottom		// top
+	{1.0,0.17,0.0}, {0.0, 0.2, 0.3}, // each of these equates to the vec3() constructor
 	// night time colors
+	// top			// bottom
 	{0.85,0.0,0.1}, {0.05,0.05,0.05}
 };
 
 float SunColor[2][3] = {
+	// base		   // peak
 	{0.8,0.0,0.0}, {1,0.5,0.0}
 };
 
@@ -48,6 +51,7 @@ float SunRadius = 0.3;
 float SunSpeed = 0.7;
 
 float HillColor[2][3] = {
+	// bottom      // top
 	{0.0,0.0,0.0}, { 0.2,0.05,0.0 }
 };
 
