@@ -70,9 +70,8 @@ int main() {
 
 	unsigned int testTexture = vg3o::loadTexture("assets/amogus.jpg", GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 	unsigned int testTexture2 = vg3o::loadTexture("assets/Yellow.png", GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
-	unsigned int noiseTexture = vg3o::loadTexture("assets/noiseTexture.png", GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 
-	unsigned int characterTexture = vg3o::loadTexture("assets/mungas.png", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+	unsigned int characterTexture = vg3o::loadTexture("assets/mungas.png", GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_NEAREST);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -85,16 +84,11 @@ int main() {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, testTexture2);
 
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, noiseTexture);
-
-
 		//Set uniforms
 		shader.use();
 		shader.setFloat("_Time", (float)glfwGetTime());
 		shader.setInt("_Texture", 0);
 		shader.setInt("_WaveTexture", 1);
-		shader.setInt("_NoiseTexture", 2);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, NULL);
 
@@ -102,7 +96,8 @@ int main() {
 		glBindTexture(GL_TEXTURE_2D, characterTexture);
 
 		characterShader.use();
-		shader.setInt("_CharacterTexture", 0);
+		characterShader.setFloat("_Time", (float)glfwGetTime());
+		characterShader.setInt("_CharacterTexture", 0);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, NULL);
 		
@@ -114,6 +109,7 @@ int main() {
 			ImGui::NewFrame();
 
 			ImGui::Begin("Settings");
+
 			ImGui::End();
 
 			ImGui::Render();
