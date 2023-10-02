@@ -9,6 +9,7 @@
 #include <imgui_impl_opengl3.h>
 
 #include <ew/shader.h>
+#include <vg3o/texture.h>
 
 struct Vertex {
 	float x, y, z;
@@ -59,10 +60,23 @@ int main() {
 	ImGui_ImplOpenGL3_Init();
 
 	ew::Shader shader("assets/vertexShader.vert", "assets/fragmentShader.frag");
+	ew::Shader characterShader("assets/character.vert", "assets/character.frag");
 
 	unsigned int quadVAO = createVAO(vertices, 4, indices, 6);
 
 	glBindVertexArray(quadVAO);
+
+	unsigned int testTexture = vg3o::loadTexture("assets/amogus.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST_MIPMAP_LINEAR);
+	unsigned int testTexture2 = vg3o::loadTexture("assets/Yellow.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST_MIPMAP_LINEAR);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, testTexture);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, testTexture2);
+
+	glActiveTexture(GL_TEXTURE2);
+
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -71,8 +85,15 @@ int main() {
 
 		//Set uniforms
 		shader.use();
+		shader.setFloat("_Time", (float)glfwGetTime());
+		shader.setInt("_Texture", 0);
+		shader.setInt("_WaveTexture", 1);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, NULL);
+		/*
+		characterShader.use();
+		shader.setInt()
+		*/
 
 		//Render UI
 		{

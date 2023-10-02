@@ -2,7 +2,7 @@
 #include "../ew/external/stb_image.h"
 #include "../ew/external/glad.h"
 
-GLenum getWrapMode(int wrapMode)
+/*GLenum getWrapMode(int wrapMode)
 {
 	switch (wrapMode)
 	{
@@ -45,11 +45,10 @@ GLenum getFilterMode(int filterMode, int mipmappingMode = 0)
 		}
 	}
 	else { return selected; }
-}
+}*/
 
 namespace vg3o {
-
-	unsigned int loadTexture(const char* filePath, int horizontalWrap, int verticalWrap, int minFilter, int magFilter, int mipmappingMin, int mipmappingMag)
+	unsigned int loadTexture(const char* filePath, int horizontalWrap, int verticalWrap, int minFilter, int magFilter)
 	{
 		stbi_set_flip_vertically_on_load(true);
 
@@ -64,7 +63,7 @@ namespace vg3o {
 
 		unsigned int texture;
 		glGenTextures(1, &texture);
- 		glBindTextures(GL_TEXTURE_2D, texture);
+ 		glBindTexture(GL_TEXTURE_2D, texture);
 
 		GLenum glFormat;
 		switch (numComponents)
@@ -85,16 +84,13 @@ namespace vg3o {
 
 		glTexImage2D(GL_TEXTURE_2D, 0, glFormat, width, height, 0, glFormat, GL_UNSIGNED_BYTE, data);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, getWrapMode(horizontalWrap));
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, getWrapMode(verticalWrap));
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, horizontalWrap);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, verticalWrap);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getFilterMode(minFilter, mipmappingMin));
-		if (magFilter != 0) { glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getFilterMode(magFilter, mipmappingMag)); }
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+		if (magFilter != 0) { glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter); }
 
-		if (mipmappingMin != 0 || mipmappingMag != 0)
-		{
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
+		glGenerateMipmap(GL_TEXTURE_2D);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		stbi_image_free(data);
