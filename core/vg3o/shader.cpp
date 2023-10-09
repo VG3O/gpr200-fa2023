@@ -126,4 +126,8 @@ namespace vg3o {
 		glUniform3fv(glGetUniformLocation(m_id, name.c_str()), arrLength, *arr);
 	}
 
+	void Shader::setMat4(const std::string& name, const ew::Mat4& v) const
+	{
+		glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &v[0][0]);
+	}
 }
