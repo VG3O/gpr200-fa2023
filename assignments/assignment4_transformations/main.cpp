@@ -77,9 +77,9 @@ int main() {
 	std::random_device rd;
 	std::mt19937 random(rd());
 	std::uniform_int_distribution<int> direction(1, 2);
-	std::uniform_real_distribution<float> distPos(0.0, 1.0);
-	std::uniform_real_distribution<float> distRot(0.0, 360.0);
-	std::uniform_real_distribution<float> distScale(0.0, 1.0);
+	std::uniform_real_distribution<float> distPos(0, 0.5);
+	std::uniform_real_distribution<float> distRot(0, 360);
+	std::uniform_real_distribution<float> distScale(0, 2);
 
 	// Setup start values
 	int DIRECTIONS[CUBE_COUNT][2];
@@ -89,19 +89,23 @@ int main() {
 
 	for (int i = 0; i < CUBE_COUNT; i++)
 	{
+		DIRECTIONS[i][0] = direction(random);
 		DIRECTIONS[i][1] = direction(random);
-		DIRECTIONS[i][2] = direction(random);
 
+		START_POS[i][0] = distPos(random);
 		START_POS[i][1] = distPos(random);
-		START_POS[i][2] = distPos(random);
 
-		START_POS[i][1] = distRot(random);
+		START_ROT[i][0] = distRot(random);
+		START_ROT[i][1] = distRot(random);
 		START_ROT[i][2] = distRot(random);
-		START_ROT[i][3] = distRot(random);
 
+		START_SCALE[i][0] = distScale(random);
 		START_SCALE[i][1] = distScale(random);
 		START_SCALE[i][2] = distScale(random);
-		START_SCALE[i][3] = distScale(random);
+
+		transformations[i].position = ew::Vec3(START_POS[i][0], START_POS[i][1], 0.0f);
+		transformations[i].scale = ew::Vec3(START_SCALE[i][0], START_SCALE[i][1], START_SCALE[i][2]);
+		transformations[i].rotation = ew::Vec3(START_ROT[i][0], START_ROT[i][1], START_ROT[i][2]);
 	}
 
 	//Cube mesh
@@ -153,25 +157,25 @@ int main() {
 					case 1:
 						if (DIRECTIONS[i][1] == 1)
 						{
-							transformations[i].position.x = -sin(Time);
-							transformations[i].position.y = sin(Time);
+							transformations[i].position.x = START_POS[i][0] + sin(Time);
+							transformations[i].position.y = START_POS[i][1] + sin(Time);
 						}
 						else
 						{
-							transformations[i].position.x = sin(Time);
-							transformations[i].position.y = -sin(Time);
+							transformations[i].position.x = START_POS[i][0] + sin(Time);
+							transformations[i].position.y = START_POS[i][1] - sin(Time);
 						}
 						break;
 					case 2:
 						if (DIRECTIONS[i][1] == 1)
 						{
-							transformations[i].position.x = -cos(Time);
-							transformations[i].position.y = sin(Time);
+							transformations[i].position.x = START_POS[i][0] - cos(Time);
+							transformations[i].position.y = START_POS[i][1] + sin(Time);
 						}
 						else
 						{
-							transformations[i].position.x = cos(Time);
-							transformations[i].position.y = -sin(Time);
+							transformations[i].position.x = START_POS[i][0] + cos(Time);
+							transformations[i].position.y = START_POS[i][1] - sin(Time);
 						}
 						break;
 					}
@@ -183,29 +187,29 @@ int main() {
 					case 1:
 						if (DIRECTIONS[i][1] == 1)
 						{
-							transformations[i].scale.x = -tan(Time);
-							transformations[i].scale.y = sin(Time);
-							transformations[i].scale.z = cos(Time);
+							transformations[i].scale.x = START_SCALE[i][0] - sin(Time);
+							transformations[i].scale.y = START_SCALE[i][1] + sin(Time);
+							transformations[i].scale.z = START_SCALE[i][2] + cos(Time);
 						}
 						else
 						{
-							transformations[i].scale.x = tan(Time);
-							transformations[i].scale.y = -cos(Time);
-							transformations[i].scale.z = sin(Time);
+							transformations[i].scale.x = START_SCALE[i][0] + cos(Time);
+							transformations[i].scale.y = START_SCALE[i][1] - cos(Time);
+							transformations[i].scale.z = START_SCALE[i][2] + sin(Time);
 						}
 						break;
 					case 2:
 						if (DIRECTIONS[i][1] == 1)
 						{
-							transformations[i].scale.x = cos(Time);
-							transformations[i].scale.y = sin(Time);
-							transformations[i].scale.z = -tan(Time);
+							transformations[i].scale.x = START_SCALE[i][0] + cos(Time);
+							transformations[i].scale.y = START_SCALE[i][1] + sin(Time);
+							transformations[i].scale.z = START_SCALE[i][2] - cos(Time);
 						}
 						else
 						{
-							transformations[i].scale.x = -cos(Time);
-							transformations[i].scale.y = tan(Time);
-							transformations[i].scale.z = -sin(Time);
+							transformations[i].scale.x = START_SCALE[i][0] - cos(Time);
+							transformations[i].scale.y = START_SCALE[i][1] + sin(Time);
+							transformations[i].scale.z = START_SCALE[i][2] - sin(Time);
 						}
 						break;
 					}
@@ -217,29 +221,29 @@ int main() {
 					case 1:
 						if (DIRECTIONS[i][1] == 1)
 						{
-							transformations[i].rotation.x += 0.05f;
-							transformations[i].rotation.y += 0.05f;
-							transformations[i].rotation.z -= 0.05f;
+							transformations[i].rotation.x += 0.01f;
+							transformations[i].rotation.y += 0.01f;
+							transformations[i].rotation.z -= 0.01f;
 						}
 						else
 						{
-							transformations[i].rotation.x += 0.05f;
-							transformations[i].rotation.y -= 0.05f;
-							transformations[i].rotation.z += 0.05f;
+							transformations[i].rotation.x += 0.01f;
+							transformations[i].rotation.y -= 0.01f;
+							transformations[i].rotation.z += 0.01f;
 						}
 						break;
 					case 2:
 						if (DIRECTIONS[i][1] == 1)
 						{
-							transformations[i].rotation.x -= 0.05f;
-							transformations[i].rotation.y += 0.05f;
-							transformations[i].rotation.z += 0.05f;
+							transformations[i].rotation.x -= 0.01f;
+							transformations[i].rotation.y += 0.01f;
+							transformations[i].rotation.z += 0.01f;
 						}
 						else
 						{
-							transformations[i].rotation.x -= 0.05f;
-							transformations[i].rotation.y += 0.05f;
-							transformations[i].rotation.z -= 0.05f;
+							transformations[i].rotation.x -= 0.01f;
+							transformations[i].rotation.y += 0.01f;
+							transformations[i].rotation.z -= 0.01f;
 						}
 						break;
 					}
