@@ -66,7 +66,52 @@ namespace vg3o {
 		ew::Vec3 rotation = ew::Vec3(0.0f, 0.0f, 0.0f);
 		ew::Vec3 scale = ew::Vec3(1.0f, 1.0f, 1.0f);
 		ew::Mat4 getModelMatrix() const {
-			return Translate(position) * RotateZ(rotation.z) * RotateX(rotation.x) * RotateY(rotation.y) * Scale(scale);
+			return vg3o::Translate(position) * vg3o::RotateY(rotation.y) * vg3o::RotateX(rotation.x) * vg3o::RotateZ(rotation.z) * vg3o::Scale(scale);
 		}
+	};
+
+	inline ew::Mat4 LookAt(ew::Vec3 eye, ew::Vec3 target, ew::Vec3 up)
+	{
+		// calculate basis vectors
+		ew::Vec3 diff = eye - target;
+		
+		ew::Vec3 f = ew::Normalize(diff); 
+		ew::Vec3 r = ew::Normalize(ew::Cross(up, f));
+		ew::Vec3 u = ew::Normalize(ew::Cross(f, r));
+
+		// view matrix
+		return ew::Mat4(
+			r.x, r.y, r.z, -ew::Dot(r, eye),
+			u.x, u.y, u.z, -ew::Dot(u, eye),
+			f.x, f.y, f.z, -ew::Dot(f, eye),
+			0, 0, 0, 1
+		);
+	};
+
+	inline ew::Mat4 Orthographic(float height, float aspect, float near, float far)
+	{
+		float width = aspect * height;
+
+		float right = width / 2;
+		float left = -right;
+		float top = height / 2;
+		float bottom = -top;
+
+		return ew::Mat4(
+			2 / (right - left), 0, 0, -((right + left) / (right - left)),
+			0, 2 / (top - bottom), 0, -((top + bottom) / (top - bottom)),
+			0, 0, -(2 / (far - near)), -((far + near) / (far - near)),
+			0, 0, 0, 1
+		);
+	};
+
+	inline ew::Mat4 Perspective(float fov, float aspect, float near, float far)
+	{
+		return ew::Mat4(
+			(1 / tan(fov / 2) * aspect), 0, 0, 0,
+			0, (1 / tan(fov / 2)), 0, 0,
+			0, 0, (near + far) / (near - far), (2 * far * near) / (near - far),
+			0, 0, -1, 0
+		);
 	};
 }

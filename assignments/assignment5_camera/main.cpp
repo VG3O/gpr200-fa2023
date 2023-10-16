@@ -12,6 +12,8 @@
 #include <ew/procGen.h>
 #include <ew/transform.h>
 
+#include "vg3o/camera.h"
+
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 
 //Projection will account for aspect ratio!
@@ -20,6 +22,7 @@ const int SCREEN_HEIGHT = 720;
 
 const int NUM_CUBES = 4;
 ew::Transform cubeTransforms[NUM_CUBES];
+vg3o::Camera camera;
 
 int main() {
 	printf("Initializing...");
@@ -66,6 +69,17 @@ int main() {
 		cubeTransforms[i].position.y = i / (NUM_CUBES / 2) - 0.5;
 	}
 
+	// Camera Setup
+	vg3o::Camera camera;
+	
+	camera.position = ew::Vec3(0, 0, 2);
+	camera.target = ew::Vec3(0, 0, 0);
+	camera.fov = 60;
+	camera.orthoSize = 6;
+	camera.nearPlane = 0.1;
+	camera.farPlane = 100;
+	camera.aspectRatio = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
+
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
@@ -82,6 +96,8 @@ int main() {
 			shader.setMat4("_Model", cubeTransforms[i].getModelMatrix());
 			cubeMesh.draw();
 		}
+
+		shader.setMat4("_ViewProjection", camera.ProjectionMatrix() * camera.ViewMatrix());
 
 		//Render UI
 		{
@@ -102,6 +118,11 @@ int main() {
 				ImGui::PopID();
 			}
 			ImGui::Text("Camera");
+			if (ImGui::CollapsingHeader("Transform")) {
+				ImGui::DragFloat3("Position", &camera.position.x, 0.05f);
+				ImGui::DragFloat3("Target", &camera.target.x, 0.05f);
+			}
+			ImGui::Checkbox("Orthographic", &camera.orthographic);
 			ImGui::End();
 			
 			ImGui::Render();
@@ -116,5 +137,6 @@ int main() {
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+	
 }
 
