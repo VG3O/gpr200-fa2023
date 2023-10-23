@@ -24,6 +24,30 @@ const int NUM_CUBES = 4;
 ew::Transform cubeTransforms[NUM_CUBES];
 vg3o::Camera camera;
 
+void moveCamera(GLFWwindow* window, vg3o::Camera* camera, vg3o::CameraControls* camData)
+{
+	if (!glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2))
+	{
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		camData->firstMouse = true;
+		return;
+	}
+	// disable visual cursor
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	// mouse position getting
+	double mouseX, mouseY;
+	glfwGetCursorPos(window, &mouseX, &mouseY);
+
+	if (camData->firstMouse)
+	{
+		camData->firstMouse = false;
+		camData->previousX = mouseX;
+		camData->previousY = mouseY;
+	}
+
+}
+
 int main() {
 	printf("Initializing...");
 	if (!glfwInit()) {
@@ -72,7 +96,7 @@ int main() {
 	// Camera Setup
 	vg3o::Camera camera;
 	
-	camera.position = ew::Vec3(0, 0, 2);
+	camera.position = ew::Vec3(0, 0, 5);
 	camera.target = ew::Vec3(0, 0, 0);
 	camera.fov = 60;
 	camera.orthoSize = 6;
@@ -117,14 +141,34 @@ int main() {
 				}
 				ImGui::PopID();
 			}
-			ImGui::Text("Camera");
-			if (ImGui::CollapsingHeader("Transform")) {
-				ImGui::DragFloat3("Position", &camera.position.x, 0.05f);
-				ImGui::DragFloat3("Target", &camera.target.x, 0.05f);
+			if (ImGui::CollapsingHeader("Camera")) {
+				ImGui::Indent();
+				if (ImGui::CollapsingHeader("Transform")) {
+					ImGui::DragFloat3("Position", &camera.position.x, 0.05f);
+					ImGui::DragFloat3("Target", &camera.target.x, 0.05f);
+				}
+				ImGui::Unindent();
+				ImGui::Checkbox("Orthographic", &camera.orthographic);
+				if (camera.orthographic) {
+					ImGui::SliderFloat("Ortho Size", &camera.orthoSize, 0.01f, 10.0f);
+				}
+				else {
+					ImGui::SliderFloat("FOV", &camera.fov, 0.01f, 185.0f);
+				}
+				ImGui::SliderFloat("Near Plane", &camera.nearPlane, 0.01f, 25.0f);
+				ImGui::SliderFloat("Far Plane", &camera.farPlane, 0.01f, 250.0f);
+				
+				if (ImGui::Button("Reset")) {
+					camera.position = ew::Vec3(0, 0, 5);
+					camera.target = ew::Vec3(0, 0, 0);
+					camera.fov = 60;
+					camera.orthoSize = 6;
+					camera.nearPlane = 0.1;
+					camera.farPlane = 100;
+				}
 			}
-			ImGui::Checkbox("Orthographic", &camera.orthographic);
 			ImGui::End();
-			
+
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
@@ -137,6 +181,7 @@ int main() {
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
-	
+	float newAspect = (float)width / (float)height;
+	camera.aspectRatio = newAspect;
 }
 

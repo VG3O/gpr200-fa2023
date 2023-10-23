@@ -108,7 +108,7 @@ namespace vg3o {
 	inline ew::Mat4 Perspective(float fov, float aspect, float near, float far)
 	{
 		return ew::Mat4(
-			(1 / tan(fov / 2) * aspect), 0, 0, 0,
+			(1 / (tan(fov / 2) * aspect)), 0, 0, 0,
 			0, (1 / tan(fov / 2)), 0, 0,
 			0, 0, (near + far) / (near - far), (2 * far * near) / (near - far),
 			0, 0, -1, 0
