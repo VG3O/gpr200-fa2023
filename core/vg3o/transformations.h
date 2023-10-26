@@ -6,6 +6,10 @@ namespace vg3o {
 		return deg * (ew::PI / 180.0f);
 	};
 
+	// this function returns the sign of a number x
+	// if x is 0 it will return 0, if x is negative it will return -1, and if x is positive it will return 1
+	inline int sign(double x) { return x == 0 ? 0 : x / abs(x); };
+
 	//Identity matrix
 	inline ew::Mat4 Identity() {
 		return ew::Mat4(
