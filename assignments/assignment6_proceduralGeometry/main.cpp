@@ -99,6 +99,13 @@ int main() {
 	ew::Transform cylinderTransform;
 	cylinderTransform.position = ew::Vec3(3.0f, 0.0f, 0.0f);
 
+	// sphere
+	ew::MeshData sphereMeshData = vg3o::createSphere(1.0f, 16);
+	ew::Mesh sphereMesh(sphereMeshData);
+
+	ew::Transform sphereTransform;
+	sphereTransform.position = ew::Vec3(5.0f, 0.0f, 0.0f);
+
 	//Initialize transforms
 	ew::Transform cubeTransform;
 
@@ -143,6 +150,10 @@ int main() {
 		// draw cylinder
 		shader.setMat4("_Model", cylinderTransform.getModelMatrix());
 		cylinderMesh.draw((ew::DrawMode)appSettings.drawAsPoints);
+
+		// draw sphere
+		shader.setMat4("_Model", sphereTransform.getModelMatrix());
+		sphereMesh.draw((ew::DrawMode)appSettings.drawAsPoints);
 
 		//Render UI
 		{
