@@ -35,22 +35,21 @@ uniform int _LightAmount;
 
 vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 pos)
 {
-	// start with ambient
-	vec3 ambient = material.ambientK * light.color;
-
 	// diffuse lighting
 	// get a vector that points to the light direction
 	vec3 newNormal = normalize(normal);
-	vec3 omega = normalize(light.position - pos);
+	vec3 omega = normalize(light.position - pos); // lightDirection
 	
 	// calculate the light intensity (I0 is just light.color)
-	vec3 diffuse = material.diffuseK * (max(dot(newNormal, omega),0)) * light.color;
+	float diffuse = material.diffuseK * (max(dot(newNormal, omega),0));
 
 	// specular lighting
-	vec3 reflection = reflect(-omega, normal);
+	vec3 halfway = normalize(omega + camView);
 
-	vec3 specular = material.specularK * pow(max(dot(reflection, camView), 0), material.shininess) * light.color;
-	return (ambient + diffuse + specular);
+	float specular = material.specularK * pow(max(dot(newNormal, halfway), 0), material.shininess);
+
+	vec3 outColor = (diffuse * light.color * 1) + (specular * light.color * 1);
+	return outColor;
 }
 
 void main(){
@@ -61,7 +60,7 @@ void main(){
 		result += MakeLight(_Lights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
 	}
 
-	vec3 OutColor = result * texture(_Texture,fs_in.UV).rgb;
+	vec3 OutColor = (result + _Material.ambientK) * texture(_Texture,fs_in.UV).rgb;
 
 	FragColor = vec4(OutColor, 1.0);
 }
