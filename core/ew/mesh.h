@@ -1,5 +1,9 @@
 /*
 	Author: Eric Winebrenner
+
+	Modified by Brandon Salvietti
+		added "Texture" struct
+		modified "MeshData" to include the new Texture struct
 */
 
 #pragma once
@@ -10,11 +14,19 @@ namespace ew {
 		ew::Vec3 pos;
 		ew::Vec3 normal;
 		ew::Vec2 uv;
+		ew::Vec3 tangent;
+	};
+
+	struct Texture {
+		unsigned int id;
+		std::string type;
+		std::string path;
 	};
 
 	struct MeshData {
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
+		std::vector<Texture> textures;
 	};
 
 	enum class DrawMode {

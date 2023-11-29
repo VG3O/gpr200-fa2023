@@ -10,7 +10,8 @@
 #include <vector>
 
 #include "../ew/mesh.h"
-#include "../ew/texture.h"
+
+#include "texture.h"
 
 #include "../assimp/Importer.hpp"
 #include "../assimp/scene.h"
@@ -21,11 +22,20 @@ namespace vg3o {
 	public:
 		Model() {};
 		Model(const std::string& path);
-		void draw();
+		void draw() {
+			for (unsigned int i = 0; i < meshes.size(); i++)
+				meshes[i].draw();
+		};
+
+		std::vector<ew::Texture> loaded_textures;
 	private:
-		vector<ew::Mesh> meshes;
-		std::string directoryPath;
+		std::vector<ew::Mesh> meshes;
+
+		std::string directory;
 		void loadModel(const std::string& path);
-		void processAssimpMesh();
+		void processAssimpNode(aiNode* node, const aiScene* scene);
+		ew::Mesh processAssimpMesh(aiMesh* mesh, const aiScene* scene);
+		
+		std::vector<ew::Texture> loadMaterialTextures(aiMaterial* material, aiTextureType type, std::string typeName);
 	};
 }

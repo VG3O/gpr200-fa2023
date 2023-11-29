@@ -1,5 +1,6 @@
 #pragma once
+#include <string>
 
 namespace vg3o {
-	unsigned int loadTexture(const char* filePath, int horizontalWrap, int verticalWrap, int minFilter, int magFilter = 0);
+	unsigned int loadTexture(const char* filePath, const std::string& directory);
 }
