@@ -21,7 +21,7 @@ namespace vg3o {
 			std::cout << "ASSIMP::ERROR -> " << importer.GetErrorString() << std::endl;
 			return;
 		}
-		directoryPath = path.substr(0, path.find_last_of('/'));
+		directory = path.substr(0, path.find_last_of('/'));
 
 		processAssimpNode(scene->mRootNode, scene);
 	}
@@ -38,7 +38,7 @@ namespace vg3o {
 		}
 	}
 
-	ew::Mesh Model::processAssimpMesh(aiMesh* mesh, const aiScene scene) {
+	ew::Mesh Model::processAssimpMesh(aiMesh* mesh, const aiScene* scene) {
 		ew::MeshData meshData;
 
 		// verticies
@@ -52,6 +52,15 @@ namespace vg3o {
 				mesh->mVertices[i].y,
 				mesh->mVertices[i].z
 			);
+			// normals
+			if (mesh->HasNormals()) {
+				vertex.normal = ew::Vec3(
+					mesh->mNormals[i].x,
+					mesh->mNormals[i].y,
+					mesh->mNormals[i].z
+				);
+			}
+
 			// uv
 			if (mesh->mTextureCoords[0])
 			{
@@ -59,17 +68,22 @@ namespace vg3o {
 					mesh->mTextureCoords[0][i].x,
 					mesh->mTextureCoords[0][i].y
 				);
+
+				vertex.tangent = ew::Vec3(
+					mesh->mTangents[i].x,
+					mesh->mTangents[i].y,
+					mesh->mTangents[i].z
+				);
+				vertex.bitangents = ew::Vec3(
+					mesh->mBitangents[i].x,
+					mesh->mBitangents[i].y,
+					mesh->mBitangents[i].z
+				);
 			}
 			else
 			{
 				vertex.uv = ew::Vec2(0.0f, 0.0f);
 			}
-
-			vertex.tangent = ew::Vec3(
-				mesh->mTangents[i].x,
-				mesh->mTangents[i].y,
-				mesh->mTangents[i].z
-			);
 
 			meshData.vertices.push_back(vertex);
 		}
@@ -87,16 +101,16 @@ namespace vg3o {
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+			std::vector<ew::Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 			meshData.textures.insert(meshData.textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-			std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+			std::vector<ew::Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 			meshData.textures.insert(meshData.textures.end(), specularMaps.begin(), specularMaps.end());
 
-			std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+			std::vector<ew::Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
 			meshData.textures.insert(meshData.textures.end(), normalMaps.begin(), normalMaps.end());
 
-			std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+			std::vector<ew::Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 			meshData.textures.insert(meshData.textures.end(), heightMaps.begin(), heightMaps.end());
 		}
 
@@ -124,7 +138,7 @@ namespace vg3o {
 			ew::Texture texture;
 			texture.id = vg3o::loadTexture(string.C_Str(), directory);
 			texture.type = typeName;
-			texture.path = string;
+			texture.path = string.C_Str();
 			textures.push_back(texture);
 		}
 		return textures;
