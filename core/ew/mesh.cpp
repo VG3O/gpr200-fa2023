@@ -49,6 +49,7 @@ namespace ew {
 		}
 		m_numVertices = meshData.vertices.size();
 		m_numIndices = meshData.indices.size();
+		mTextures = meshData.textures;
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -64,5 +65,28 @@ namespace ew {
 			glDrawArrays(GL_POINTS, 0, m_numVertices);
 		}
 		
+	}
+	void Mesh::drawLoadTex(Shader& shader) const
+	{
+		unsigned int diffuseNum = 1;
+		unsigned int specularNum = 1;
+
+		for (unsigned int i = 0; i < mTextures.size(); i++) {
+			glActiveTexture(GL_TEXTURE0 + i);
+			std::string number;
+			std::string texName = mTextures[i].type;
+			if (texName == "texture_diffuse") {
+				number = std::to_string(diffuseNum++);
+			}
+			else if (texName == "texture_specular") {
+				number = std::to_string(specularNum++);
+			}
+			std::string matString = "_Material." + texName + "[" + number + "]";
+			shader.setInt(matString.c_str(), i);
+			glBindTexture(GL_TEXTURE_2D, mTextures[i].id);
+		}
+		glActiveTexture(GL_TEXTURE0);
+		glBindVertexArray(m_vao);
+		glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, NULL);
 	}
 }

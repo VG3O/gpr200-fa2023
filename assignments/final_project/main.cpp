@@ -37,7 +37,12 @@ struct Light {
 	ew::Vec3 position;
 	ew::Vec3 color;
 	float strength = 1.0f;
-	float range = 10.0f;
+	
+	// these values determine attenuation
+	// default values are for 13 distance
+	float constant = 1.0f;
+	float linear = 0.35f;
+	float quadratic = 0.44f; 
 };
 
 struct Material {
@@ -78,7 +83,10 @@ int main() {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
-	
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	ew::Shader shader("assets/defaultLit.vert", "assets/defaultLit.frag");
 	ew::Shader unlitShader("assets/unlit.vert", "assets/unlit.frag");
 	unsigned int brickTexture = ew::loadTexture("assets/brick_color.jpg",GL_REPEAT,GL_LINEAR);
@@ -92,7 +100,7 @@ int main() {
 	resetCamera(camera,cameraController);
 
 	Light lights[MAX_LIGHTS]; 
-	int activeLights = 3;
+	int activeLights = 1;
 
 	Material material;
 	material.ambientK = 0.05;
@@ -100,10 +108,10 @@ int main() {
 	material.specular = 0.5;
 	material.shininess = 8;
 
-	vg3o::Model newModel("assets/test/untitled.obj");
+	vg3o::Model newModel("assets/cars/gtr-exported.obj");
 
 	ew::Transform modelTransform;
-	modelTransform.scale = ew::Vec3(0.1f, 0.1f, 0.1f);
+	modelTransform.scale = ew::Vec3(0.3f, 0.3f, 0.3f);
 
 	// light source meshes
 	ew::Mesh lightSources[MAX_LIGHTS];
@@ -129,14 +137,16 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
-		glBindTexture(GL_TEXTURE_2D, brickTexture);
-		shader.setInt("_Texture", 0);
+
 		shader.setMat4("_ViewProjection", camera.ProjectionMatrix() * camera.ViewMatrix());
 
-		//Draw shapes
+		//Draw models
+		unsigned int diffuseNum = 1;
+		unsigned int specularNum = 1;
+
 
 		shader.setMat4("_Model", modelTransform.getModelMatrix());
-		newModel.draw();
+		newModel.draw(shader);
 
 		shader.setFloat("_Material.ambientK", material.ambientK);
 		shader.setFloat("_Material.diffuseK", material.diffuseK);
@@ -149,7 +159,9 @@ int main() {
 			shader.setVec3("_Lights["+ std::to_string(i) +"].position", lights[i].position);
 			shader.setVec3("_Lights[" + std::to_string(i) + "].color", lights[i].color);
 			shader.setFloat("_Lights[" + std::to_string(i) + "].strength", lights[i].strength);
-			shader.setFloat("_Lights[" + std::to_string(i) + "].range", lights[i].range);
+			shader.setFloat("_Lights[" + std::to_string(i) + "].constant", lights[i].constant);
+			shader.setFloat("_Lights[" + std::to_string(i) + "].linear", lights[i].linear);
+			shader.setFloat("_Lights[" + std::to_string(i) + "].quadratic", lights[i].quadratic);
 		}
 	
 		unlitShader.use();
@@ -200,7 +212,8 @@ int main() {
 					ImGui::DragFloat3("Position", &lights[i].position.x, 0.01f);
 					ImGui::DragFloat3("Color", &lights[i].color.x, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Strength", &lights[i].strength, 0.01f, 0.0f, 10.0f);
-					ImGui::DragFloat("Range", &lights[i].range, 0.01f, 1.0f, 60.0f);
+					ImGui::DragFloat("Linear Coef", &lights[i].linear, 0.001f, 0.001f, 1.0f);
+					ImGui::DragFloat("Quadratic Coef", &lights[i].quadratic, 0.001f, 0.001f, 2.0f);
 				}
 				ImGui::PopID();
 			}

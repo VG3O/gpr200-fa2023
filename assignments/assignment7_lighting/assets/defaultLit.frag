@@ -48,7 +48,7 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 
 	float specular = material.specularK * pow(max(dot(newNormal, halfway), 0), material.shininess);
 
-	vec3 outColor = (diffuse * light.color * 1) + (specular * light.color * 1);
+	vec3 outColor = material.ambientK + (diffuse * light.color * 1) + (specular * light.color * 1);
 	return outColor;
 }
 
@@ -60,7 +60,7 @@ void main(){
 		result += MakeLight(_Lights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
 	}
 
-	vec3 OutColor = (result + _Material.ambientK) * texture(_Texture,fs_in.UV).rgb;
+	vec3 OutColor = result * texture(_Texture,fs_in.UV).rgb;
 
 	FragColor = vec4(OutColor, 1.0);
 }

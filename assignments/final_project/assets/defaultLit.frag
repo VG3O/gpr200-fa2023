@@ -13,14 +13,23 @@ struct Light{
 	vec3 position;
 	vec3 color;
 	float strength;
-	float range;
+	
+	// light properties
+	float constant;
+	float linear;
+	float quadratic;
 };
+
+#define MAX_TEXTURES 10
 
 struct Material{
 	float ambientK;
 	float diffuseK;
 	float specularK;
 	float shininess;
+
+	sampler2D texture_diffuse[MAX_TEXTURES];
+	sampler2D texture_specular[MAX_TEXTURES];
 };
 
 #define MAX_LIGHTS 6
@@ -29,6 +38,7 @@ uniform Light _Lights[MAX_LIGHTS];
 // light material uniforms
 
 uniform Material _Material;
+
 
 // camera uniforms
 uniform vec3 _CameraPosition;
@@ -49,15 +59,23 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 	if (dist < 1) {
 		dist = 1;
 	}
+
+	float attenuation = 1.0 / (light.constant + light.linear * dist + light.quadratic * (dist * dist));
+
 	// calculate the light intensity (I0 is just light.color)
-	float diffuse = material.diffuseK * (max(dot(newNormal, lightDirection),0)) / (dist / light.range);
+	float diffuse = material.diffuseK * (max(dot(newNormal, lightDirection),0));
 
 	// specular lighting
 	vec3 halfway = normalize(lightDirection + camView);
 
 	float specular = material.specularK * pow(max(dot(newNormal, halfway), 0), material.shininess);
 
-	vec3 outColor = (diffuse * light.color * light.strength) + (specular * light.color * light.strength);
+	float ambient = material.ambientK * attenuation;
+
+	diffuse *= attenuation;
+	specular *= attenuation;
+
+	vec3 outColor = (ambient * light.color) + (diffuse * light.color * light.strength) + (specular * light.color * light.strength);
 	return outColor;
 }
 
@@ -69,7 +87,7 @@ void main(){
 		result += MakeLight(_Lights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
 	}
 
-	vec3 OutColor = (result + _Material.ambientK) * texture(_Texture,fs_in.UV).rgb;
+	vec3 OutColor = result * texture(_Texture,fs_in.UV).rgb;
 
 	FragColor = vec4(OutColor, 1.0);
 }

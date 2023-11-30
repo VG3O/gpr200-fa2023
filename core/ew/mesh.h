@@ -8,6 +8,7 @@
 
 #pragma once
 #include "ewMath/ewMath.h"
+#include "shader.h"
 
 namespace ew {
 	struct Vertex {
@@ -40,11 +41,14 @@ namespace ew {
 		Mesh() {};
 		Mesh(const MeshData& meshData);
 		void load(const MeshData& meshData);
-		void draw(DrawMode drawMode = DrawMode::TRIANGLES)const;
+		void draw(ew::DrawMode drawmode = DrawMode::TRIANGLES)const;
+		void drawLoadTex(Shader& shader) const;
+		inline std::vector<Texture> getTextures()const { return mTextures; }
 		inline int getNumVertices()const { return m_numVertices; }
 		inline int getNumIndices()const { return m_numIndices; }
 	private:
 		bool m_initialized = false;
+		std::vector<Texture> mTextures;
 		unsigned int m_vao = 0;
 		unsigned int m_vbo = 0;
 		unsigned int m_ebo = 0;
