@@ -15,6 +15,7 @@ namespace ew {
 		ew::Vec3 normal;
 		ew::Vec2 uv;
 		ew::Vec3 tangent;
+		ew::Vec3 bitangents;
 	};
 
 	struct Texture {

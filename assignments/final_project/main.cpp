@@ -9,12 +9,15 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
+
 #include <ew/shader.h>
 #include <ew/texture.h>
 #include <ew/procGen.h>
 #include <ew/transform.h>
 #include <ew/camera.h>
 #include <ew/cameraController.h>
+
+#include <vg3o/model.h>
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void resetCamera(ew::Camera& camera, ew::CameraController& cameraController);
@@ -33,6 +36,8 @@ ew::CameraController cameraController;
 struct Light {
 	ew::Vec3 position;
 	ew::Vec3 color;
+	float strength = 1.0f;
+	float range = 10.0f;
 };
 
 struct Material {
@@ -62,6 +67,7 @@ int main() {
 		return 1;
 	}
 
+
 	//Initialize ImGUI
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -72,7 +78,7 @@ int main() {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
-
+	
 	ew::Shader shader("assets/defaultLit.vert", "assets/defaultLit.frag");
 	ew::Shader unlitShader("assets/unlit.vert", "assets/unlit.frag");
 	unsigned int brickTexture = ew::loadTexture("assets/brick_color.jpg",GL_REPEAT,GL_LINEAR);
@@ -82,15 +88,6 @@ int main() {
 	ew::Mesh planeMesh(ew::createPlane(5.0f, 5.0f, 10));
 	ew::Mesh sphereMesh(ew::createSphere(0.5f, 64));
 	ew::Mesh cylinderMesh(ew::createCylinder(0.5f, 1.0f, 32));
-
-	//Initialize transforms
-	ew::Transform cubeTransform;
-	ew::Transform planeTransform;
-	ew::Transform sphereTransform;
-	ew::Transform cylinderTransform;
-	planeTransform.position = ew::Vec3(0, -1.0, 0);
-	sphereTransform.position = ew::Vec3(-1.5f, 0.0f, 0.0f);
-	cylinderTransform.position = ew::Vec3(1.5f, 0.0f, 0.0f);
 
 	resetCamera(camera,cameraController);
 
@@ -102,6 +99,11 @@ int main() {
 	material.diffuseK = 0.5;
 	material.specular = 0.5;
 	material.shininess = 8;
+
+	vg3o::Model newModel("assets/test/untitled.obj");
+
+	ew::Transform modelTransform;
+	modelTransform.scale = ew::Vec3(0.1f, 0.1f, 0.1f);
 
 	// light source meshes
 	ew::Mesh lightSources[MAX_LIGHTS];
@@ -132,17 +134,9 @@ int main() {
 		shader.setMat4("_ViewProjection", camera.ProjectionMatrix() * camera.ViewMatrix());
 
 		//Draw shapes
-		shader.setMat4("_Model", cubeTransform.getModelMatrix());
-		cubeMesh.draw();
 
-		shader.setMat4("_Model", planeTransform.getModelMatrix());
-		planeMesh.draw();
-
-		shader.setMat4("_Model", sphereTransform.getModelMatrix());
-		sphereMesh.draw();
-
-		shader.setMat4("_Model", cylinderTransform.getModelMatrix());
-		cylinderMesh.draw();
+		shader.setMat4("_Model", modelTransform.getModelMatrix());
+		newModel.draw();
 
 		shader.setFloat("_Material.ambientK", material.ambientK);
 		shader.setFloat("_Material.diffuseK", material.diffuseK);
@@ -154,6 +148,8 @@ int main() {
 		for (int i = 0; i < activeLights; i++) {
 			shader.setVec3("_Lights["+ std::to_string(i) +"].position", lights[i].position);
 			shader.setVec3("_Lights[" + std::to_string(i) + "].color", lights[i].color);
+			shader.setFloat("_Lights[" + std::to_string(i) + "].strength", lights[i].strength);
+			shader.setFloat("_Lights[" + std::to_string(i) + "].range", lights[i].range);
 		}
 	
 		unlitShader.use();
@@ -203,6 +199,8 @@ int main() {
 				if (ImGui::CollapsingHeader("Light")) {
 					ImGui::DragFloat3("Position", &lights[i].position.x, 0.01f);
 					ImGui::DragFloat3("Color", &lights[i].color.x, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Strength", &lights[i].strength, 0.01f, 0.0f, 10.0f);
+					ImGui::DragFloat("Range", &lights[i].range, 0.01f, 1.0f, 60.0f);
 				}
 				ImGui::PopID();
 			}

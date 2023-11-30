@@ -8,14 +8,15 @@
 
 #pragma once
 #include <vector>
+#include <iostream>
 
 #include "../ew/mesh.h"
 
 #include "texture.h"
 
-#include "../assimp/Importer.hpp"
-#include "../assimp/scene.h"
-#include "../assimp/postprocess.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 namespace vg3o {
 	class Model {
