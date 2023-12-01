@@ -27,26 +27,33 @@ struct Light{
 #define MAX_TEXTURES 10
 
 struct Material{
-	float ambientK;
-	float diffuseK;
-	float specularK;
+	vec3 ambientColor;
+	vec3 diffuseColor;
+	vec3 specularColor;
 	float shininess;
 
-	sampler2D texture_diffuse;
-	sampler2D texture_specular;
+	sampler2D texture_diffuse1;
+	sampler2D texture_diffuse2;
+	sampler2D texture_diffuse3;
+	sampler2D texture_specular1;
+	sampler2D texture_specular2;
+	sampler2D texture_specular3;
+	sampler2D texture_normal1;
+	sampler2D texture_normal2;
+	sampler2D texture_normal3;
+
 };
 
 #define MAX_LIGHTS 6
 uniform Light _Lights[MAX_LIGHTS];
 
-// light material uniforms
-
+// material uniform
 uniform Material _Material;
-
 
 // camera uniforms
 uniform vec3 _CameraPosition;
 
+// current light count
 uniform int _LightAmount;
 
 
@@ -67,24 +74,24 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 	float attenuation = 1.0 / (light.constant + light.linear * dist + light.quadratic * (dist * dist));
 
 	// calculate the light intensity (I0 is just light.color)
-	float diffuseFloat = (max(dot(newNormal, lightDirection),0));
+	float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
 
-	vec3 diffuse = light.diffuse * diffuseFloat * vec3(texture(material.texture_diffuse, fs_in.UV));
+	vec3 diffuse = light.color * diffuseFloat; // * vec3(texture(material.texture_diffuse1, fs_in.UV)));
 
 	// specular lighting
 	vec3 halfway = normalize(lightDirection + camView);
 
-	float specularFloat = pow(max(dot(newNormal, halfway), 0), material.shininess);
+	float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess) * light.strength;
 	
-	vec3 specular = light.specular * specularFloat * vec3(texture(material.texture_specular, fs_in.UV));
+	vec3 specular = light.color * specularFloat; //vec3(texture(material.texture_specular1, fs_in.UV)));
 
-	vec3 ambient = 0.050 * vec3(texture(material.texture_diffuse, fs_in.UV));
+	vec3 ambient = light.color; //vec3(texture(material.texture_diffuse1, fs_in.UV));
 
 	ambient *= attenuation;
 	diffuse *= attenuation;
 	specular *= attenuation;
 
-	vec3 outColor = (ambient * light.color) + (diffuse * light.color * light.strength) + (specular * light.color * light.strength);
+	vec3 outColor = ambient + diffuse + specular;
 	return outColor;
 }
 
@@ -96,7 +103,7 @@ void main(){
 		result += MakeLight(_Lights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
 	}
 
-	vec4 colorTexture = texture(_Material.texture_diffuse,fs_in.UV);
+	vec4 colorTexture = texture(_Material.texture_diffuse1,fs_in.UV);
 
 
 	FragColor = vec4(result, 1.0) * colorTexture;

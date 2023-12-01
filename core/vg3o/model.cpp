@@ -100,34 +100,43 @@ namespace vg3o {
 		// material
 		if (mesh->mMaterialIndex >= 0)
 		{
-			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			std::vector<ew::Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+			aiMaterial* meshMaterial = scene->mMaterials[mesh->mMaterialIndex];
+			std::vector<ew::Texture> diffuseMaps = loadMaterialTextures(meshMaterial, aiTextureType_DIFFUSE, "texture_diffuse");
 			meshData.textures.insert(meshData.textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-			std::vector<ew::Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+			std::vector<ew::Texture> specularMaps = loadMaterialTextures(meshMaterial, aiTextureType_SPECULAR, "texture_specular");
 			meshData.textures.insert(meshData.textures.end(), specularMaps.begin(), specularMaps.end());
 
-			std::vector<ew::Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+			std::vector<ew::Texture> normalMaps = loadMaterialTextures(meshMaterial, aiTextureType_HEIGHT, "texture_normal");
 			meshData.textures.insert(meshData.textures.end(), normalMaps.begin(), normalMaps.end());
 
-			std::vector<ew::Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+			std::vector<ew::Texture> heightMaps = loadMaterialTextures(meshMaterial, aiTextureType_AMBIENT, "texture_height");
 			meshData.textures.insert(meshData.textures.end(), heightMaps.begin(), heightMaps.end());
 
 			aiColor3D diffuseColor(0.f, 0.f, 0.f);
+			aiColor3D ambientColor(0.f, 0.f, 0.f);
 			aiColor3D specularColor(0.f, 0.f, 0.f);
+			aiString name;
 			float shininess = 0.f;
 
-			material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
-			material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor);
-			material->Get(AI_MATKEY_SHININESS, shininess);
-			/*
-			Material* newMat;
-			newMat->diffuseCol = ew::Vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
-			newMat->ambientCol = newMat->diffuseCol;
-			newMat->specularCol = ew::Vec3(specularColor.r, specularColor.g, specularColor.b);
-			newMat->shininess = shininess;
+			meshMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
+			meshMaterial->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor);
+			meshMaterial->Get(AI_MATKEY_COLOR_SPECULAR, specularColor);
+			meshMaterial->Get(AI_MATKEY_SHININESS, shininess);
+			meshMaterial->Get(AI_MATKEY_NAME, name);
 
-			materials.push_back(newMat);*/
+			Material newMat;
+			newMat.diffuse = ew::Vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
+			newMat.ambient = ew::Vec3(ambientColor.r, ambientColor.g, ambientColor.b);
+			newMat.specular = ew::Vec3(specularColor.r, specularColor.g, specularColor.b);
+			newMat.shininess = shininess;
+
+
+			std::cout << "Material " << name.C_Str() << std::endl;
+			std::cout << "Diffuse: (" << newMat.diffuse.x << ", " << newMat.diffuse.y << ", " << newMat.diffuse.z << ")\n";
+			std::cout << "Specular: (" << newMat.specular.x << ", " << newMat.specular.y << ", " << newMat.specular.z << ")\n";
+			std::cout << "Specular Shininess: " << newMat.shininess << std::endl << std::endl;
+			meshData.material = newMat;
 		}
 
 		return ew::Mesh(meshData);

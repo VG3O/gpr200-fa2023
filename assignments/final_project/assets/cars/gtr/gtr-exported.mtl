@@ -1,1036 +1,844 @@
-newmtl Stickers6Mtl
-Material Color
+#
+#
+#
+
+newmtl BlackMetal1 Mesh_BlackMetal1Mtl
+illum 2
 Ka 0.373615 0.368591 0.383775
 Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Stickers6_diff.png
-map_Kd Stickers6_diff.png
-map_d Stickers6_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Metal1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Metal1_diff.png
-map_Kd Metal1_diff.png
-map_d Metal1_diff.png
-
-map_Bump Metal1_nmap.png
-
-map_Ns Metal1_spec.png
-
-newmtl Stickers1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Stickers1_diff.png
-map_Kd Stickers1_diff.png
-map_d Stickers1_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Stickers2Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Stickers2_diff.png
-map_Kd Stickers2_diff.png
-map_d Stickers2_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Rotor1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Rotor1_diff.png
-map_Kd Rotor1_diff.png
-map_d Rotor1_diff.png
-
-map_Bump Rotor1_nmap.png
-
-map_Ns Rotor1_spec.png
-
-newmtl Livery1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Livery1_diff.png
-map_Kd Livery1_diff.png
-map_d Livery1_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Metal5Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Metal5_diff.png
-map_Kd Metal5_diff.png
-map_d Metal5_diff.png
-
-map_Bump Metal5_nmap.png
-
-map_Ns Metal5_spec.png
-
-newmtl Metal3Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Metal3_diff.png
-map_Kd Metal3_diff.png
-map_d Metal3_diff.png
-
-map_Bump Metal3_nmap.png
-
-map_Ns Metal3_spec.png
-
-newmtl Windshield2Mtl
-Material Color
-Ka 0.280124 0.280124 0.280124
-Kd 0.280124 0.280124 0.280124
-Ks 0.280124 0.280124 0.280124 
-
-d 0.2
-
-Ns 255
-
-map_Ns MetallicBase1_spec.png
-
-newmtl Cube0181Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Cube0181_diff.png
-map_Kd Cube0181_diff.png
-map_d Cube0181_diff.png
-
-map_Bump Cube0181_nmap.png
-
-map_Ns Cube0181_spec.png
-
-newmtl HeadlightChrome1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka HeadlightChrome1_diff.png
-map_Kd HeadlightChrome1_diff.png
-map_d HeadlightChrome1_diff.png
-
-map_Bump HeadlightChrome1_nmap.png
-
-map_Ns HeadlightChrome1_spec.png
-
-newmtl Stickers3Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Stickers3_diff.png
-map_Kd Stickers3_diff.png
-map_d Stickers3_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Carbon6Mtl
-Material Color
-Ka 0.447871 0.547994 0.00455975
-Kd 0.447871 0.547994 0.00455975
-Ks 0.177392 0.217048 0.00180602 
-
-d 1
-
-Ns 0
-
-newmtl Metal2Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Metal2_diff.png
-map_Kd Metal2_diff.png
-map_d Metal2_diff.png
-
-map_Bump Metal2_nmap.png
-
-map_Ns Metal2_spec.png
-
-newmtl Rim1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Rim1_diff.png
-map_Kd Rim1_diff.png
-map_d Rim1_diff.png
-
-map_Bump Rim1_nmap.png
-
-map_Ns Rim1_spec.png
-
-newmtl Rim2Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Rim2_diff.png
-map_Kd Rim2_diff.png
-map_d Rim2_diff.png
-
-map_Bump Rim2_nmap.png
-
-map_Ns Rim2_spec.png
-
-newmtl Metal4Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Metal4_diff.png
-map_Kd Metal4_diff.png
-map_d Metal4_diff.png
-
-map_Bump Metal4_nmap.png
-
-map_Ns Metal4_spec.png
-
-newmtl Caliper1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Caliper1_diff.png
-map_Kd Caliper1_diff.png
-map_d Caliper1_diff.png
-
-map_Bump Caliper1_nmap.png
-
-map_Ns Caliper1_spec.png
-
-newmtl MetallicBase1Mtl
-Material Color
-Ka 0.766744 0.766744 0.766744
-Kd 0.766744 0.766744 0.766744
-Ks 0.766744 0.766744 0.766744 
-
-d 1
-
-Ns 255
-
-map_Ns MetallicBase1_spec.png
-
-newmtl Uc1Mtl
-Material Color
-Ka 0.00258583 0.00258583 0.00258583
-Kd 0.00258583 0.00258583 0.00258583
-Ks 0.000233231 0.000233231 0.000233231 
-
-d 1
-
-Ns 0
-
-newmtl TireRear1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka TireRear1_diff.png
-map_Kd TireRear1_diff.png
-map_d TireRear1_diff.png
-
-map_Bump TireRear1_nmap.png
-
-map_Ns TireRear1_spec.png
-
-newmtl Hardware0011Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Hardware0011_diff.png
-map_Kd Hardware0011_diff.png
-map_d Hardware0011_diff.png
-
-map_Bump Hardware0011_nmap.png
-
-map_Ns Hardware0011_spec.png
-
-newmtl RimStickers1Mtl
-Material Color
-Ka 1 1 1
-Kd 1 1 1
-Ks 1 1 1 
-
-d 0.952941
-
-Ns 27
-
-map_Ka RimStickers1_diff.png
-map_Kd RimStickers1_diff.png
-map_d RimStickers1_diff.png
-
-newmtl MetallicBase2Mtl
-Material Color
-Ka 0.579547 0.00902149 0.00902149
-Kd 0.579547 0.00902149 0.00902149
-Ks 0.0500001 0.000778325 0.000778325 
-
-d 1
-
-Ns 0
-
-map_Ka MetallicBase2_diff.png
-map_Kd MetallicBase2_diff.png
-map_d MetallicBase2_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Windshield0011Mtl
-Material Color
-Ka 1 1 1
-Kd 1 1 1
-Ks 1 1 1 
-
-d 1
-
-Ns 27
-
-map_Ka Windshield0011_diff.png
-map_Kd Windshield0011_diff.png
-map_d Windshield0011_diff.png
-
-newmtl Cube0091Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Cube0091_diff.png
-map_Kd Cube0091_diff.png
-map_d Cube0091_diff.png
-
-map_Ns Cube0091_spec.png
-
-newmtl InteriorSil1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka InteriorSil1_diff.png
-map_Kd InteriorSil1_diff.png
-map_d InteriorSil1_diff.png
-
-map_Bump InteriorSil1_nmap.png
-
-map_Ns InteriorSil1_spec.png
-
-newmtl CarbonGloss1Mtl
-Material Color
-Ka 0 0 0
-Kd 0 0 0
-Ks 0 0 0 
-
-d 0.45098
-
-Ns 27
-
-map_Ns CarbonGloss1_spec.png
-
-newmtl Carbon1Mtl
-Material Color
-Ka 1 1 1
-Kd 1 1 1
-Ks 0.0901961 0.0901961 0.0901961 
-
-d 1
-
-Ns 27
-
-map_Ka CarbonGlossBase1_diff.png
-map_Kd CarbonGlossBase1_diff.png
-map_d CarbonGlossBase1_diff.png
-
-map_Bump CarbonGlossBase1_nmap.png
-
-map_Ns Carbon1_spec.png
-
-newmtl Window1Mtl
-Material Color
-Ka 0.0697271 0.0697271 0.0697271
-Kd 0.0697271 0.0697271 0.0697271
-Ks 0.0697271 0.0697271 0.0697271 
-
-d 0.4
-
-Ns 255
-
-map_Ns MetallicBase1_spec.png
-
-newmtl InteriorSil0011Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka InteriorSil0011_diff.png
-map_Kd InteriorSil0011_diff.png
-map_d InteriorSil0011_diff.png
-
-map_Bump InteriorSil0011_nmap.png
-
-map_Ns InteriorSil0011_spec.png
-
-newmtl Livery3Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Livery3_diff.png
-map_Kd Livery3_diff.png
-map_d Livery3_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Gloss1Mtl
-Material Color
-Ka 0.00258583 0.00258583 0.00258583
-Kd 0.00258583 0.00258583 0.00258583
-Ks 0.00258583 0.00258583 0.00258583 
-
-d 1
-
-Ns 27
-
-map_Ns CarbonGloss1_spec.png
-
-newmtl Stickers4Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Stickers4_diff.png
-map_Kd Stickers4_diff.png
-map_d Stickers4_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl CarbonGlossBase1Mtl
-Material Color
-Ka 1 0.859174 0.573159
-Kd 1 0.859174 0.573159
-Ks 1 0.859174 0.573159 
-
-d 1
-
-Ns 27
-
-map_Ka CarbonGlossBase1_diff.png
-map_Kd CarbonGlossBase1_diff.png
-map_d CarbonGlossBase1_diff.png
-
-map_Bump CarbonGlossBase1_nmap.png
-
-map_Ns CarbonGlossBase1_spec.png
-
-newmtl Nonmirrored0071Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Nonmirrored0071_diff.png
-map_Kd Nonmirrored0071_diff.png
-map_d Nonmirrored0071_diff.png
-
-map_Bump Nonmirrored0071_nmap.png
-
-map_Ns Nonmirrored0071_spec.png
-
-newmtl Nonmirrored0051Mtl
-Material Color
-Ka 0.00258583 0.00258583 0.00258583
-Kd 0.00258583 0.00258583 0.00258583
-Ks 0.000182529 0.000182529 0.000182529 
-
-d 1
-
-Ns 0
-
-map_Ns Nonmirrored0051_spec.png
-
-newmtl Metal8Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Metal8_diff.png
-map_Kd Metal8_diff.png
-map_d Metal8_diff.png
-
-map_Bump Metal8_nmap.png
-
-map_Ns Metal8_spec.png
-
-newmtl Cube0081Mtl
-Material Color
-Ka 0.144972 0.144972 0.144972
-Kd 0.144972 0.144972 0.144972
-Ks 0.144972 0.144972 0.144972 
-
-d 0.65098
-
-Ns 27
-
-map_Ns CarbonGloss1_spec.png
-
-newmtl Nonmirrored0081Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Nonmirrored0081_diff.png
-map_Kd Nonmirrored0081_diff.png
-map_d Nonmirrored0081_diff.png
-
-map_Bump Nonmirrored0081_nmap.png
-
-map_Ns Nonmirrored0081_spec.png
-
-newmtl MetallicBase4Mtl
-Material Color
-Ka 0.579547 0.00902149 0.00902149
-Kd 0.579547 0.00902149 0.00902149
-Ks 0.0500001 0.000778325 0.000778325 
-
-d 1
-
-Ns 0
-
-map_Ka MetallicBase4_diff.png
-map_Kd MetallicBase4_diff.png
-map_d MetallicBase4_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl TaillightTex1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka TaillightTex1_diff.png
-map_Kd TaillightTex1_diff.png
-map_d TaillightTex1_diff.png
-
-map_Ns TaillightTex1_spec.png
-
-newmtl Bulb1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Bulb1_diff.png
-map_Kd Bulb1_diff.png
-map_d Bulb1_diff.png
-
-map_Bump Bulb1_nmap.png
-
-map_Ns Bulb1_spec.png
-
-newmtl Stickers8Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Stickers8_diff.png
-map_Kd Stickers8_diff.png
-map_d Stickers8_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl MetallicBase5Mtl
-Material Color
-Ka 0 0 0
-Kd 0 0 0
-Ks 0 0 0 
-
-d 1
-
-Ns 27
-
-map_Ns CarbonGloss1_spec.png
-
-newmtl Rear0011Mtl
-Material Color
-Ka 0.579547 0.00902149 0.00902149
-Kd 0.579547 0.00902149 0.00902149
-Ks 0.579547 0.00902149 0.00902149 
-
-d 1
-
-Ns 27
-
-map_Ns CarbonGloss1_spec.png
-
-newmtl Livery2Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Livery2_diff.png
-map_Kd Livery2_diff.png
-map_d Livery2_diff.png
-
-map_Bump Livery2_nmap.png
-
-map_Ns Livery2_spec.png
-
-newmtl TireFront1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka TireFront1_diff.png
-map_Kd TireFront1_diff.png
-map_d TireFront1_diff.png
-
-map_Bump TireFront1_nmap.png
-
-map_Ns TireFront1_spec.png
-
-newmtl StickersCommon1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka StickersCommon1_diff.png
-map_Kd StickersCommon1_diff.png
-map_d StickersCommon1_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Mirror1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.373615 0.368591 0.383775 
-
-d 1
-
-Ns 255
-
-map_Ns MetallicBase1_spec.png
-
-newmtl Livery4Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Livery4_diff.png
-map_Kd Livery4_diff.png
-map_d Livery4_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Livery5Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka Livery5_diff.png
-map_Kd Livery5_diff.png
-map_d Livery5_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl BlackMetal1Mtl
-Material Color
-Ka 0.373615 0.368591 0.383775
-Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka BlackMetal1_diff.png
+Ks 0.032233 0.031800 0.033110
+Ns 100
 map_Kd BlackMetal1_diff.png
-map_d BlackMetal1_diff.png
 
-map_Ns BlackMetal1_spec.png
-
-newmtl Livery6Mtl
-Material Color
+newmtl Bulb1 Mesh_Bulb1Mtl
+illum 2
 Ka 0.373615 0.368591 0.383775
 Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
+Ks 0.032233 0.031800 0.033110
+Ns 100
+map_Kd Bulb1_diff.png
 
-d 1
-
-Ns 0
-
-map_Ka Livery6_diff.png
-map_Kd Livery6_diff.png
-map_d Livery6_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl TowHook1Mtl
-Material Color
+newmtl Caliper1 Mesh_Caliper1Mtl
+illum 2
 Ka 0.373615 0.368591 0.383775
 Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
+Ks 0.032233 0.031800 0.033110
+Ns 100
+map_Kd Caliper1_diff.png
 
-d 1
-
-Ns 0
-
-map_Ka TowHook1_diff.png
-map_Kd TowHook1_diff.png
-map_d TowHook1_diff.png
-
-map_Bump TowHook1_nmap.png
-
-map_Ns TowHook1_spec.png
-
-newmtl Grille1Mtl
-Material Color
+newmtl Caliper2 Mesh_Caliper1Mtl
+illum 2
 Ka 0.373615 0.368591 0.383775
 Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
+Ks 0.032233 0.031800 0.033110
+Ns 100
+map_Kd Caliper1_diff.png
 
-d 1
-
-Ns 0
-
-map_Ka Grille1_diff.png
-map_Kd Grille1_diff.png
-map_d Grille1_diff.png
-
-map_Bump Grille1_nmap.png
-
-map_Ns Grille1_spec.png
-
-newmtl ChromePaint1Mtl
-Material Color
+newmtl Caliper3 Mesh_Caliper1Mtl
+illum 2
 Ka 0.373615 0.368591 0.383775
 Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
+Ks 0.032233 0.031800 0.033110
+Ns 100
+map_Kd Caliper1_diff.png
 
-d 1
+newmtl Caliper4 Mesh_Caliper1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 100
+map_Kd Caliper1_diff.png
 
-Ns 0
+newmtl Carbon1 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 200
+map_Kd CarbonGlossBase1_diff.png
 
-map_Ka ChromePaint1_diff.png
-map_Kd ChromePaint1_diff.png
-map_d ChromePaint1_diff.png
+newmtl Carbon10 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 200
+map_Kd CarbonGlossBase1_diff.png
 
-map_Bump ChromePaint1_nmap.png
+newmtl Carbon11 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 200
+map_Kd CarbonGlossBase1_diff.png
 
-map_Ns ChromePaint1_spec.png
+newmtl Carbon12 Mesh_Carbon12Mtl
+illum 2
+Ka 1.000000 0.442323 0.000000
+Kd 1.000000 0.442323 0.000000
+Ks 0.396078 0.175195 0.000000
+Ns 100
 
-newmtl CarbonKevlar1Mtl
-Material Color
+newmtl Carbon13 Mesh_Carbon6Mtl
+illum 2
+Ka 0.447871 0.547994 0.004560
+Kd 0.447871 0.547994 0.004560
+Ks 0.177392 0.217048 0.001806
+Ns 100
+
+newmtl Carbon2 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 200
+map_Kd CarbonGlossBase1_diff.png
+
+newmtl Carbon3 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 200
+map_Kd CarbonGlossBase1_diff.png
+
+newmtl Carbon4 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 200
+map_Kd CarbonGlossBase1_diff.png
+
+newmtl Carbon5 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 27.000000
+map_Kd CarbonGlossBase1_diff.png
+
+newmtl Carbon6 Mesh_Carbon6Mtl
+illum 2
+Ka 0.447871 0.547994 0.004560
+Kd 0.447871 0.547994 0.004560
+Ks 0.177392 0.217048 0.001806
+Ns 200
+
+newmtl Carbon7 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 200
+map_Kd CarbonGlossBase1_diff.png
+
+newmtl Carbon8 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 200
+map_Kd CarbonGlossBase1_diff.png
+
+newmtl Carbon9 Mesh_Carbon1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090196 0.090196 0.090196
+Ns 200
+map_Kd CarbonGlossBase1_diff.png
+
+newmtl CarbonGloss1 Mesh_CarbonGloss1Mtl
+illum 2
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ns 200
+
+newmtl CarbonGloss2 Mesh_CarbonGloss1Mtl
+illum 2
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ns 200
+
+newmtl CarbonGlossBase1 Mesh_CarbonGlossBase1Mtl
+illum 2
+Ka 1.000000 0.859174 0.573159
+Kd 1.000000 0.859174 0.573159
+Ks 1.000000 0.859174 0.573159
+Ns 200.000000
+map_Kd CarbonGlossBase1_diff.png
+
+newmtl CarbonGlossBase2 Mesh_CarbonGlossBase1Mtl
+illum 2
+Ka 1.000000 0.859174 0.573159
+Kd 1.000000 0.859174 0.573159
+Ks 1.000000 0.859174 0.573159
+Ns 200.000000
+map_Kd CarbonGlossBase1_diff.png
+
+newmtl CarbonKevlar1 Mesh_CarbonKevlar1Mtl
+illum 2
 Ka 0.499505 0.499505 0.499505
 Kd 0.499505 0.499505 0.499505
-Ks 0.0450534 0.0450534 0.0450534 
-
-d 1
-
-Ns 0
-
-map_Ka CarbonKevlar1_diff.png
+Ks 0.045053 0.045053 0.045053
+Ns 100.000000
 map_Kd CarbonKevlar1_diff.png
-map_d CarbonKevlar1_diff.png
 
-map_Bump CarbonKevlar1_nmap.png
-
-map_Ns CarbonKevlar1_spec.png
-
-newmtl Cube0071Mtl
-Material Color
+newmtl ChromePaint1 Mesh_ChromePaint1Mtl
+illum 2
 Ka 0.373615 0.368591 0.383775
 Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
+map_Kd ChromePaint1_diff.png
 
-d 1
-
-Ns 0
-
-map_Ka Cube0071_diff.png
+newmtl Cube0071 Mesh_Cube0071Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
 map_Kd Cube0071_diff.png
-map_d Cube0071_diff.png
 
-map_Ns Stickers1_spec.png
+newmtl Cube0081 Mesh_Cube0081Mtl
+illum 2
+Ka 0.144972 0.144972 0.144972
+Kd 0.144972 0.144972 0.144972
+Ks 0.144972 0.144972 0.144972
+Ns 200.000000
 
-newmtl Exhaust1Mtl
-Material Color
+newmtl Cube0091 Mesh_Cube0091Mtl
+illum 2
 Ka 0.373615 0.368591 0.383775
 Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
+map_Kd Cube0091_diff.png
 
-d 1
-
-Ns 0
-
-map_Ka Exhaust1_diff.png
-map_Kd Exhaust1_diff.png
-map_d Exhaust1_diff.png
-
-map_Bump Exhaust1_nmap.png
-
-map_Ns Exhaust1_spec.png
-
-newmtl MetallicBase7Mtl
-Material Color
-Ka 0.579547 0.00902149 0.00902149
-Kd 0.579547 0.00902149 0.00902149
-Ks 0.0500001 0.000778325 0.000778325 
-
-d 1
-
-Ns 0
-
-map_Ka MetallicBase7_diff.png
-map_Kd MetallicBase7_diff.png
-map_d MetallicBase7_diff.png
-
-map_Ns Stickers1_spec.png
-
-newmtl Cube0161Mtl
-Material Color
-Ka 1 1 1
-Kd 1 1 1
-Ks 0.0705882 0.0705882 0.0705882 
-
-d 1
-
-Ns 0
-
-map_Ka Cube0161_diff.png
+newmtl Cube0161 Mesh_Cube0161Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.070588 0.070588 0.070588
+Ns 100.000000
 map_Kd Cube0161_diff.png
-map_d Cube0161_diff.png
 
-newmtl Cube0171Mtl
-Material Color
+newmtl Cube0171 Mesh_Cube0171Mtl
+illum 2
 Ka 0.373615 0.368591 0.383775
 Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
-
-d 1
-
-Ns 0
-
-map_Ka TaillightTex1_diff.png
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
 map_Kd TaillightTex1_diff.png
-map_d TaillightTex1_diff.png
 
-map_Bump Cube0171_nmap.png
-
-map_Ns Cube0171_spec.png
-
-newmtl Cube0191Mtl
-Material Color
+newmtl Cube0181 Mesh_Cube0181Mtl
+illum 2
 Ka 0.373615 0.368591 0.383775
 Kd 0.373615 0.368591 0.383775
-Ks 0.0322335 0.0318 0.03311 
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
+map_Kd Cube0181_diff.png
 
-d 1
-
-Ns 0
-
-map_Ka Cube0191_diff.png
+newmtl Cube0191 Mesh_Cube0191Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
 map_Kd Cube0191_diff.png
-map_d Cube0191_diff.png
 
-map_Bump Cube0191_nmap.png
+newmtl Cube0241 Mesh_Uc1Mtl
+illum 2
+Ka 0.002586 0.002586 0.002586
+Kd 0.002586 0.002586 0.002586
+Ks 0.000233 0.000233 0.000233
+Ns 100.000000
 
-map_Ns Cube0191_spec.png
+newmtl Exhaust1 Mesh_Exhaust1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
+map_Kd Exhaust1_diff.png
 
-newmtl Carbon12Mtl
-Material Color
-Ka 1 0.442323 0
-Kd 1 0.442323 0
-Ks 0.396078 0.175195 0 
+newmtl Gloss1 Mesh_Gloss1Mtl
+illum 2
+Ka 0.002586 0.002586 0.002586
+Kd 0.002586 0.002586 0.002586
+Ks 0.002586 0.002586 0.002586
+Ns 200.000000
 
-d 1
+newmtl Grille1 Mesh_Grille1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
+map_Kd Grille1_diff.png
 
-Ns 0
+newmtl Hardware0011 Mesh_Hardware0011Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 10.000000
+map_Kd Hardware0011_diff.png
+
+newmtl Hardware1 Mesh_Hardware0011Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 10.000000
+map_Kd Hardware0011_diff.png
+
+newmtl HeadlightChrome1 Mesh_HeadlightChrome1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
+map_Kd HeadlightChrome1_diff.png
+
+newmtl InteriorSil0011 Mesh_InteriorSil0011Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 100.000000
+map_Kd InteriorSil0011_diff.png
+
+newmtl InteriorSil1 Mesh_InteriorSil1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd InteriorSil1_diff.png
+
+newmtl Livery1 Mesh_Livery1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Livery1_diff.png
+
+newmtl Livery2 Mesh_Livery2Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Livery2_diff.png
+
+newmtl Livery3 Mesh_Livery3Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Livery3_diff.png
+
+newmtl Livery4 Mesh_Livery4Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Livery4_diff.png
+
+newmtl Livery5 Mesh_Livery5Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Livery5_diff.png
+
+newmtl Livery6 Mesh_Livery6Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Livery6_diff.png
+
+newmtl Metal1 Mesh_Metal1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal1_diff.png
+
+newmtl Metal10 Mesh_Metal1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal1_diff.png
+
+newmtl Metal11 Mesh_Metal2Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal2_diff.png
+
+newmtl Metal12 Mesh_Metal3Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal3_diff.png
+
+newmtl Metal2 Mesh_Metal2Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal2_diff.png
+
+newmtl Metal3 Mesh_Metal3Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal3_diff.png
+
+newmtl Metal4 Mesh_Metal4Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal4_diff.png
+
+newmtl Metal5 Mesh_Metal5Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal5_diff.png
+
+newmtl Metal6 Mesh_Metal4Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal4_diff.png
+
+newmtl Metal7 Mesh_Metal5Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal5_diff.png
+
+newmtl Metal8 Mesh_Metal8Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal8_diff.png
+
+newmtl Metal9 Mesh_Metal8Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 200.000000
+map_Kd Metal8_diff.png
+
+newmtl MetallicBase1 Mesh_MetallicBase1Mtl
+illum 2
+Ka 0.766744 0.766744 0.766744
+Kd 0.766744 0.766744 0.766744
+Ks 0.766744 0.766744 0.766744
+Ns 255.000000
+
+newmtl MetallicBase2 Mesh_MetallicBase2Mtl
+illum 2
+Ka 0.579547 0.009021 0.009021
+Kd 0.579547 0.009021 0.009021
+Ks 0.050000 0.000778 0.000778
+Ns 255.000000
+map_Kd MetallicBase2_diff.png
+
+newmtl MetallicBase3 Mesh_MetallicBase1Mtl
+illum 2
+Ka 0.766744 0.766744 0.766744
+Kd 0.766744 0.766744 0.766744
+Ks 0.766744 0.766744 0.766744
+Ns 255.000000
+
+newmtl MetallicBase4 Mesh_MetallicBase4Mtl
+illum 2
+Ka 0.579547 0.009021 0.009021
+Kd 0.579547 0.009021 0.009021
+Ks 0.050000 0.000778 0.000778
+Ns 200.000000
+map_Kd MetallicBase4_diff.png
+
+newmtl MetallicBase5 Mesh_MetallicBase5Mtl
+illum 2
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ns 200.000000
+
+newmtl MetallicBase6 Mesh_MetallicBase5Mtl
+illum 2
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ns 200.000000
+
+newmtl MetallicBase7 Mesh_MetallicBase7Mtl
+illum 2
+Ka 0.579547 0.009021 0.009021
+Kd 0.579547 0.009021 0.009021
+Ks 0.050000 0.000778 0.000778
+Ns 255.000000
+map_Kd MetallicBase7_diff.png
+
+newmtl Mirror1 Mesh_Mirror1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.373615 0.368591 0.383775
+Ns 255.000000
+
+newmtl Nonmirrored0021 Mesh_Uc1Mtl
+illum 2
+Ka 0.002586 0.002586 0.002586
+Kd 0.002586 0.002586 0.002586
+Ks 0.000233 0.000233 0.000233
+Ns 200.000000
+
+newmtl Nonmirrored0051 Mesh_Nonmirrored0051Mtl
+illum 2
+Ka 0.002586 0.002586 0.002586
+Kd 0.002586 0.002586 0.002586
+Ks 0.000183 0.000183 0.000183
+Ns 0.000000
+
+newmtl Nonmirrored0071 Mesh_Nonmirrored0071Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Nonmirrored0071_diff.png
+
+newmtl Nonmirrored0081 Mesh_Nonmirrored0081Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Nonmirrored0081_diff.png
+
+newmtl ReallyBlack1 Mesh_Uc1Mtl
+illum 2
+Ka 0.002586 0.002586 0.002586
+Kd 0.002586 0.002586 0.002586
+Ks 0.000233 0.000233 0.000233
+Ns 0.000000
+
+newmtl Rear0011 Mesh_Rear0011Mtl
+illum 2
+Ka 0.579547 0.009021 0.009021
+Kd 0.579547 0.009021 0.009021
+Ks 0.579547 0.009021 0.009021
+Ns 255.000000
+
+newmtl Rim1 Mesh_Rim1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Rim1_diff.png
+
+newmtl Rim2 Mesh_Rim2Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Rim2_diff.png
+
+newmtl Rim3 Mesh_Rim2Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Rim2_diff.png
+
+newmtl Rim4 Mesh_Rim1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Rim1_diff.png
+
+newmtl RimStickers1 Mesh_RimStickers1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 27.000000
+map_Kd RimStickers1_diff.png
+
+newmtl RimStickers2 Mesh_RimStickers1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 27.000000
+map_Kd RimStickers1_diff.png
+
+newmtl RimStickers3 Mesh_RimStickers1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 27.000000
+map_Kd RimStickers1_diff.png
+
+newmtl RimStickers4 Mesh_RimStickers1Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 27.000000
+map_Kd RimStickers1_diff.png
+
+newmtl Rotor1 Mesh_Rotor1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Rotor1_diff.png
+
+newmtl Rotor2 Mesh_Rotor1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Rotor1_diff.png
+
+newmtl Rotor3 Mesh_Rotor1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Rotor1_diff.png
+
+newmtl Rotor4 Mesh_Rotor1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Rotor1_diff.png
+
+newmtl Stickers1 Mesh_Stickers1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Stickers1_diff.png
+
+newmtl Stickers2 Mesh_Stickers2Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Stickers2_diff.png
+
+newmtl Stickers3 Mesh_Stickers3Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Stickers3_diff.png
+
+newmtl Stickers4 Mesh_Stickers4Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Stickers4_diff.png
+
+newmtl Stickers5 Mesh_Stickers2Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Stickers2_diff.png
+
+newmtl Stickers6 Mesh_Stickers6Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Stickers6_diff.png
+
+newmtl Stickers7 Mesh_Stickers2Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Stickers2_diff.png
+
+newmtl Stickers8 Mesh_Stickers8Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd Stickers8_diff.png
+
+newmtl StickersCommon1 Mesh_StickersCommon1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd StickersCommon1_diff.png
+
+newmtl TaillightTex1 Mesh_TaillightTex1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd TaillightTex1_diff.png
+
+newmtl TireFront1 Mesh_TireFront1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd TireFront1_diff.png
+
+newmtl TireFront2 Mesh_TireFront1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd TireFront1_diff.png
+
+newmtl TireRear1 Mesh_TireRear1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd TireRear1_diff.png
+
+newmtl TireRear2 Mesh_TireRear1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd TireRear1_diff.png
+
+newmtl TowHook1 Mesh_TowHook1Mtl
+illum 2
+Ka 0.373615 0.368591 0.383775
+Kd 0.373615 0.368591 0.383775
+Ks 0.032233 0.031800 0.033110
+Ns 0.000000
+map_Kd TowHook1_diff.png
+
+newmtl Uc1 Mesh_Uc1Mtl
+illum 2
+Ka 0.002586 0.002586 0.002586
+Kd 0.002586 0.002586 0.002586
+Ks 0.000233 0.000233 0.000233
+Ns 0.000000
+
+newmtl Uc2 Mesh_Uc1Mtl
+illum 2
+Ka 0.002586 0.002586 0.002586
+Kd 0.002586 0.002586 0.002586
+Ks 0.000233 0.000233 0.000233
+Ns 0.000000
+
+newmtl Window1 Mesh_Window1Mtl
+illum 2
+Ka 0.069727 0.069727 0.069727
+Kd 0.069727 0.069727 0.069727
+Ks 0.069727 0.069727 0.069727
+Ns 255.000000
+
+newmtl WindowBorder1 Mesh_Gloss1Mtl
+illum 2
+Ka 0.002586 0.002586 0.002586
+Kd 0.002586 0.002586 0.002586
+Ks 0.002586 0.002586 0.002586
+Ns 27.000000
+
+newmtl Windshield0011 Mesh_Windshield0011Mtl
+illum 2
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 27.000000
+map_Kd Windshield0011_diff.png
+
+newmtl Windshield0012 Mesh_Gloss1Mtl
+illum 2
+Ka 0.002586 0.002586 0.002586
+Kd 0.002586 0.002586 0.002586
+Ks 0.002586 0.002586 0.002586
+Ns 27.000000
+
+newmtl Windshield1 Mesh_Window1Mtl
+illum 2
+Ka 0.069727 0.069727 0.069727
+Kd 0.069727 0.069727 0.069727
+Ks 0.069727 0.069727 0.069727
+Ns 255.000000
+
+newmtl Windshield2 Mesh_Windshield2Mtl
+illum 2
+Ka 0.280124 0.280124 0.280124
+Kd 0.280124 0.280124 0.280124
+Ks 0.280124 0.280124 0.280124
+Ns 255.000000
 

@@ -41,14 +41,15 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 	vec3 omega = normalize(light.position - pos); // lightDirection
 	
 	// calculate the light intensity (I0 is just light.color)
-	float diffuse = material.diffuseK * (max(dot(newNormal, omega),0));
+	float diffuse = material.diffuseK * (max(dot(newNormal, omega),0.0));
 
 	// specular lighting
-	vec3 halfway = normalize(omega + camView);
+	vec3 camDir = normalize(_CameraPosition - fs_in.WorldPosition);
+	vec3 halfway = normalize(omega + camDir);
 
-	float specular = material.specularK * pow(max(dot(newNormal, halfway), 0), material.shininess);
+	float specular = material.specularK * pow(max(dot(newNormal, halfway), 0.0), material.shininess);
 
-	vec3 outColor = material.ambientK + (diffuse * light.color * 1) + (specular * light.color * 1);
+	vec3 outColor = material.ambientK + (diffuse * light.color * 1.0) + (specular * light.color * 1.0);
 	return outColor;
 }
 

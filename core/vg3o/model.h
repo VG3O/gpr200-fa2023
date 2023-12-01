@@ -19,25 +19,6 @@
 #include <assimp/postprocess.h>
 
 namespace vg3o {
-
-	struct Material {
-		std::string name;
-		
-		// lighting properties
-		float ambientK;
-		float diffuseK;
-		float specularK;
-		float shininess;
-
-		ew::Vec3 ambientCol;
-		ew::Vec3 diffuseCol;
-		ew::Vec3 specularCol;
-
-		ew::Texture diffuseMap;
-		ew::Texture normalMap;
-		ew::Texture specularMap;
-	};
-
 	struct Light {
 		ew::Vec3 position;
 		ew::Vec3 color;
@@ -65,7 +46,6 @@ namespace vg3o {
 		std::vector<ew::Texture> loaded_textures;
 	private:
 		std::vector<ew::Mesh> meshes;
-		std::vector<Material*> materials;
 
 		std::string directory;
 

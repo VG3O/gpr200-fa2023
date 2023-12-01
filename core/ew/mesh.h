@@ -11,6 +11,18 @@
 #include "ewMath/ewMath.h"
 #include "shader.h"
 
+namespace vg3o {
+	struct Material {
+		std::string name;
+
+		// lighting properties
+		ew::Vec3 ambient;
+		ew::Vec3 diffuse;
+		ew::Vec3 specular;
+		float shininess;
+	};
+}
+
 namespace ew {
 	struct Vertex {
 		ew::Vec3 pos;
@@ -30,7 +42,9 @@ namespace ew {
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
 		std::vector<Texture> textures;
+		vg3o::Material material;
 	};
+
 
 	enum class DrawMode {
 		TRIANGLES = 0,
@@ -50,6 +64,7 @@ namespace ew {
 	private:
 		bool m_initialized = false;
 		std::vector<Texture> mTextures;
+		vg3o::Material mMaterial;
 		unsigned int m_vao = 0;
 		unsigned int m_vbo = 0;
 		unsigned int m_ebo = 0;

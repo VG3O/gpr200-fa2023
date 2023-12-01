@@ -33,14 +33,6 @@ ew::Vec3 bgColor = ew::Vec3(0.1f);
 ew::Camera camera;
 ew::CameraController cameraController;
 
-
-struct Material {
-	float ambientK;
-	float diffuseK;
-	float specular;
-	float shininess;
-};
-
 int main() {
 	printf("Initializing...");
 	if (!glfwInit()) {
@@ -92,12 +84,6 @@ int main() {
 	vg3o::Light lights[MAX_LIGHTS]; 
 	int activeLights = 1;
 
-	Material material;
-	material.ambientK = 0.05;
-	material.diffuseK = 0.5;
-	material.specular = 0.5;
-	material.shininess = 8;
-
 	vg3o::Model newModel("assets/cars/gtr/gtr-exported.obj");
 
 	ew::Transform modelTransform;
@@ -137,11 +123,6 @@ int main() {
 
 		shader.setMat4("_Model", modelTransform.getModelMatrix());
 		newModel.draw(shader);
-
-		shader.setFloat("_Material.ambientK", material.ambientK);
-		shader.setFloat("_Material.diffuseK", material.diffuseK);
-		shader.setFloat("_Material.specularK", material.specular);
-		shader.setFloat("_Material.shininess", material.shininess);
 
 		// light setup
 		shader.setInt("_LightAmount", activeLights);
@@ -192,12 +173,6 @@ int main() {
 				if (ImGui::Button("Reset")) {
 					resetCamera(camera, cameraController);
 				}
-			}
-			if (ImGui::CollapsingHeader("Material Settings")) {
-				ImGui::DragFloat("Ambient", &material.ambientK, 0.05f, 0.0f, 1.0f);
-				ImGui::DragFloat("Diffuse", &material.diffuseK, 0.05f, 0.0f, 1.0f);
-				ImGui::DragFloat("Specular", &material.specular, 0.05f, 0.0f, 1.0f);
-				ImGui::DragFloat("Shininess", &material.shininess, 0.05f, 2.0f, 256.0f);
 			}
 			ImGui::SliderInt("Light Amount", &activeLights, 0, MAX_LIGHTS);
 			for (int i = 0; i < activeLights; i++) {
