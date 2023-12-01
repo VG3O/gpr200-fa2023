@@ -130,6 +130,7 @@ int main() {
 		glBindTexture(GL_TEXTURE_2D, brickTexture);
 		shader.setInt("_Texture", 0);
 		shader.setMat4("_ViewProjection", camera.ProjectionMatrix() * camera.ViewMatrix());
+		shader.setVec3("_CameraPosition", camera.position);
 
 		//Draw shapes
 		shader.setMat4("_Model", cubeTransform.getModelMatrix());

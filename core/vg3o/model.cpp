@@ -110,9 +110,6 @@ namespace vg3o {
 			std::vector<ew::Texture> normalMaps = loadMaterialTextures(meshMaterial, aiTextureType_HEIGHT, "texture_normal");
 			meshData.textures.insert(meshData.textures.end(), normalMaps.begin(), normalMaps.end());
 
-			std::vector<ew::Texture> heightMaps = loadMaterialTextures(meshMaterial, aiTextureType_AMBIENT, "texture_height");
-			meshData.textures.insert(meshData.textures.end(), heightMaps.begin(), heightMaps.end());
-
 			aiColor3D diffuseColor(0.f, 0.f, 0.f);
 			aiColor3D ambientColor(0.f, 0.f, 0.f);
 			aiColor3D specularColor(0.f, 0.f, 0.f);
@@ -132,7 +129,8 @@ namespace vg3o {
 			newMat.shininess = shininess;
 
 
-			std::cout << "Material " << name.C_Str() << std::endl;
+			std::cout << "Material " << name.C_Str() << std::endl; 
+			std::cout << "Texture Count: " << diffuseMaps.size() + specularMaps.size() + normalMaps.size() << std::endl;
 			std::cout << "Diffuse: (" << newMat.diffuse.x << ", " << newMat.diffuse.y << ", " << newMat.diffuse.z << ")\n";
 			std::cout << "Specular: (" << newMat.specular.x << ", " << newMat.specular.y << ", " << newMat.specular.z << ")\n";
 			std::cout << "Specular Shininess: " << newMat.shininess << std::endl << std::endl;

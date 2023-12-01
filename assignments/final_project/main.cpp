@@ -115,11 +115,9 @@ int main() {
 		shader.use();
 
 		shader.setMat4("_ViewProjection", camera.ProjectionMatrix() * camera.ViewMatrix());
-
+		shader.setVec3("_CameraPosition", camera.position);
+		
 		//Draw models
-		unsigned int diffuseNum = 1;
-		unsigned int specularNum = 1;
-
 
 		shader.setMat4("_Model", modelTransform.getModelMatrix());
 		newModel.draw(shader);

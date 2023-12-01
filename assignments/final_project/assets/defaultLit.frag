@@ -76,25 +76,31 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 	// calculate the light intensity (I0 is just light.color)
 	float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
 
-	vec3 diffuse = light.color * diffuseFloat; // * vec3(texture(material.texture_diffuse1, fs_in.UV)));
+	vec3 diffuse = light.color * diffuseFloat * vec3(texture(material.texture_diffuse1, fs_in.UV));
 
 	// specular lighting
 	vec3 halfway = normalize(lightDirection + camView);
 
 	float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess) * light.strength;
 	
-	vec3 specular = light.color * specularFloat; //vec3(texture(material.texture_specular1, fs_in.UV)));
+	vec3 specular = specularFloat * vec3(texture(material.texture_specular1, fs_in.UV));
 
-	vec3 ambient = light.color; //vec3(texture(material.texture_diffuse1, fs_in.UV));
+	float ambient = 0.15;
 
 	ambient *= attenuation;
 	diffuse *= attenuation;
 	specular *= attenuation;
 
-	vec3 outColor = ambient + diffuse + specular;
+	vec3 outColor = (light.color * ambient * material.diffuseColor);
+	outColor += light.color * diffuse * material.diffuseColor;
+	outColor += light.color * specular * material.specularColor;
+
 	return outColor;
 }
-
+// TODO: change material struct to include booleans for every texture type, so the textures can be-
+// excluded from the calculations and only just use the diffuse/specular base colors.
+// This should apply also to FragColor (instead of using a texture as the output use a base vec3 color like-
+// usual.
 void main(){
 
 	vec3 result;
