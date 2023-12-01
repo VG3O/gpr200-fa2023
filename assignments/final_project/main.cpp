@@ -33,17 +33,6 @@ ew::Vec3 bgColor = ew::Vec3(0.1f);
 ew::Camera camera;
 ew::CameraController cameraController;
 
-struct Light {
-	ew::Vec3 position;
-	ew::Vec3 color;
-	float strength = 1.0f;
-	
-	// these values determine attenuation
-	// default values are for 13 distance
-	float constant = 1.0f;
-	float linear = 0.35f;
-	float quadratic = 0.44f; 
-};
 
 struct Material {
 	float ambientK;
@@ -83,6 +72,7 @@ int main() {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -99,7 +89,7 @@ int main() {
 
 	resetCamera(camera,cameraController);
 
-	Light lights[MAX_LIGHTS]; 
+	vg3o::Light lights[MAX_LIGHTS]; 
 	int activeLights = 1;
 
 	Material material;
@@ -108,7 +98,7 @@ int main() {
 	material.specular = 0.5;
 	material.shininess = 8;
 
-	vg3o::Model newModel("assets/cars/gtr-exported.obj");
+	vg3o::Model newModel("assets/cars/gtr/gtr-exported.obj");
 
 	ew::Transform modelTransform;
 	modelTransform.scale = ew::Vec3(0.3f, 0.3f, 0.3f);
@@ -159,6 +149,10 @@ int main() {
 			shader.setVec3("_Lights["+ std::to_string(i) +"].position", lights[i].position);
 			shader.setVec3("_Lights[" + std::to_string(i) + "].color", lights[i].color);
 			shader.setFloat("_Lights[" + std::to_string(i) + "].strength", lights[i].strength);
+
+			shader.setVec3("_Lights[" + std::to_string(i) + "].diffuse", lights[i].diffuse);
+			shader.setVec3("_Lights[" + std::to_string(i) + "].specular", lights[i].specular);
+
 			shader.setFloat("_Lights[" + std::to_string(i) + "].constant", lights[i].constant);
 			shader.setFloat("_Lights[" + std::to_string(i) + "].linear", lights[i].linear);
 			shader.setFloat("_Lights[" + std::to_string(i) + "].quadratic", lights[i].quadratic);

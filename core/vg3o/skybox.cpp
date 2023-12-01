@@ -1,13 +1,13 @@
 #include "../ew/external/glad.h"
 #include "../ew/ewMath/ewMath.h"
-#include <vector>
+#include "../ew/external/stb_image.h"
 #include "skybox.h"
 
 namespace vg3o
 {
 	
 	
-	unsigned int loadCubemap(vector<std::string> faces)
+	unsigned int loadCubemap(std::vector<std::string> faces)
 	{
 		unsigned int textureID;
 		glGenTextures(1, &textureID);
@@ -19,7 +19,7 @@ namespace vg3o
 			unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
 			if (data)
 			{
-				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RBG, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 				stbi_image_free(data);
 			}
 			else

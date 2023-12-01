@@ -112,6 +112,22 @@ namespace vg3o {
 
 			std::vector<ew::Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 			meshData.textures.insert(meshData.textures.end(), heightMaps.begin(), heightMaps.end());
+
+			aiColor3D diffuseColor(0.f, 0.f, 0.f);
+			aiColor3D specularColor(0.f, 0.f, 0.f);
+			float shininess = 0.f;
+
+			material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
+			material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor);
+			material->Get(AI_MATKEY_SHININESS, shininess);
+			/*
+			Material* newMat;
+			newMat->diffuseCol = ew::Vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
+			newMat->ambientCol = newMat->diffuseCol;
+			newMat->specularCol = ew::Vec3(specularColor.r, specularColor.g, specularColor.b);
+			newMat->shininess = shininess;
+
+			materials.push_back(newMat);*/
 		}
 
 		return ew::Mesh(meshData);

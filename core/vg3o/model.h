@@ -21,6 +21,9 @@
 namespace vg3o {
 
 	struct Material {
+		std::string name;
+		
+		// lighting properties
 		float ambientK;
 		float diffuseK;
 		float specularK;
@@ -35,6 +38,21 @@ namespace vg3o {
 		ew::Texture specularMap;
 	};
 
+	struct Light {
+		ew::Vec3 position;
+		ew::Vec3 color;
+		float strength = 1.0f;
+
+		ew::Vec3 diffuse = ew::Vec3(1.f, 1.f, 1.f);
+		ew::Vec3 specular = ew::Vec3(1.f,1.f,1.f);
+
+		// these values determine attenuation
+		// default values are for 13 distance
+		float constant = 1.0f;
+		float linear = 0.35f;
+		float quadratic = 0.44f;
+	};
+
 	class Model {
 	public:
 		Model() {};
@@ -47,7 +65,7 @@ namespace vg3o {
 		std::vector<ew::Texture> loaded_textures;
 	private:
 		std::vector<ew::Mesh> meshes;
-		std::vector<Material> materials;
+		std::vector<Material*> materials;
 
 		std::string directory;
 

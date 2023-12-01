@@ -3,7 +3,8 @@
 
 	Modified by Brandon Salvietti
 		added "Texture" struct
-		modified "MeshData" to include the new Texture struct
+		modified "MeshData" to include the new Texture struct and tangent data
+		added function drawLoadTex for loading model textures onto a model when draw calling
 */
 
 #pragma once

@@ -9,10 +9,14 @@ in Surface{
 
 uniform sampler2D _Texture;
 
+
 struct Light{ 
 	vec3 position;
 	vec3 color;
 	float strength;
+
+	vec3 diffuse;
+	vec3 specular;
 	
 	// light properties
 	float constant;
@@ -28,8 +32,8 @@ struct Material{
 	float specularK;
 	float shininess;
 
-	sampler2D texture_diffuse[MAX_TEXTURES];
-	sampler2D texture_specular[MAX_TEXTURES];
+	sampler2D texture_diffuse;
+	sampler2D texture_specular;
 };
 
 #define MAX_LIGHTS 6
@@ -63,15 +67,20 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 	float attenuation = 1.0 / (light.constant + light.linear * dist + light.quadratic * (dist * dist));
 
 	// calculate the light intensity (I0 is just light.color)
-	float diffuse = material.diffuseK * (max(dot(newNormal, lightDirection),0));
+	float diffuseFloat = (max(dot(newNormal, lightDirection),0));
+
+	vec3 diffuse = light.diffuse * diffuseFloat * vec3(texture(material.texture_diffuse, fs_in.UV));
 
 	// specular lighting
 	vec3 halfway = normalize(lightDirection + camView);
 
-	float specular = material.specularK * pow(max(dot(newNormal, halfway), 0), material.shininess);
+	float specularFloat = pow(max(dot(newNormal, halfway), 0), material.shininess);
+	
+	vec3 specular = light.specular * specularFloat * vec3(texture(material.texture_specular, fs_in.UV));
 
-	float ambient = material.ambientK * attenuation;
+	vec3 ambient = 0.050 * vec3(texture(material.texture_diffuse, fs_in.UV));
 
+	ambient *= attenuation;
 	diffuse *= attenuation;
 	specular *= attenuation;
 
@@ -87,7 +96,8 @@ void main(){
 		result += MakeLight(_Lights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
 	}
 
-	vec3 OutColor = result * texture(_Texture,fs_in.UV).rgb;
+	vec4 colorTexture = texture(_Material.texture_diffuse,fs_in.UV);
 
-	FragColor = vec4(OutColor, 1.0);
+
+	FragColor = vec4(result, 1.0) * colorTexture;
 }

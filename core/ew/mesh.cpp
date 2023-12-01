@@ -68,20 +68,20 @@ namespace ew {
 	}
 	void Mesh::drawLoadTex(Shader& shader) const
 	{
-		unsigned int diffuseNum = 1;
-		unsigned int specularNum = 1;
+		unsigned int diffuseNum = 0;
+		unsigned int specularNum = 0;
 
 		for (unsigned int i = 0; i < mTextures.size(); i++) {
 			glActiveTexture(GL_TEXTURE0 + i);
 			std::string number;
 			std::string texName = mTextures[i].type;
-			if (texName == "texture_diffuse") {
+			/*if (texName == "texture_diffuse") {
 				number = std::to_string(diffuseNum++);
 			}
 			else if (texName == "texture_specular") {
 				number = std::to_string(specularNum++);
-			}
-			std::string matString = "_Material." + texName + "[" + number + "]";
+			}*/
+			std::string matString = "_Material." + texName;
 			shader.setInt(matString.c_str(), i);
 			glBindTexture(GL_TEXTURE_2D, mTextures[i].id);
 		}
