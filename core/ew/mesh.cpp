@@ -5,6 +5,7 @@
 #include "mesh.h"
 #include "ewMath/ewMath.h"
 #include "external/glad.h"
+#include <iostream>
 
 namespace ew {
 	Mesh::Mesh(const MeshData& meshData)
@@ -69,28 +70,34 @@ namespace ew {
 	}
 	void Mesh::drawLoadTex(Shader& shader) const
 	{
-		unsigned int diffuseNum = 1;
-		unsigned int specularNum = 1;
+		if (mTextures.size() > 0) {
+			unsigned int diffuseNum = 1;
+			unsigned int specularNum = 1;
 
-		for (unsigned int i = 0; i < mTextures.size(); i++) {
-			glActiveTexture(GL_TEXTURE0 + i); 
-			std::string number;
-			std::string name = mTextures[i].type;
-			if (name == "texture_diffuse") {
-				number = std::to_string(diffuseNum++);
+			for (unsigned int i = 0; i < mTextures.size(); i++) {
+				glActiveTexture(GL_TEXTURE0 + i);
+				std::string number;
+				std::string name = mTextures[i].type;
+				if (name == "texture_diffuse") {
+					number = std::to_string(diffuseNum++);
+				}
+				else if (name == "texture_specular") {
+					number = std::to_string(specularNum++); 
+				}
+				shader.setInt("_Material.texture_diffuse1", i);
+				glBindTexture(GL_TEXTURE_2D, mTextures[i].id);
 			}
-			else if (name == "texture_specular") {
-				number = std::to_string(specularNum++);
-			}
-			shader.setInt(("_Material." + name + number).c_str(), i);
-			glBindTexture(GL_TEXTURE_2D, mTextures[i].id);
+			glActiveTexture(GL_TEXTURE0);
 		}
 		shader.setVec3("_Material.ambientColor", mMaterial.ambient);
 		shader.setVec3("_Material.specularColor", mMaterial.specular);
 		shader.setVec3("_Material.diffuseColor", mMaterial.diffuse);
 		shader.setFloat("_Material.shininess", mMaterial.shininess);
+		shader.setFloat("_Material.opacity", mMaterial.opacity);
+		shader.setInt("_Material.hasDiffuse", mMaterial.hasDiffuse);
+		shader.setInt("_Material.hasSpecular", mMaterial.hasSpecular);
+		shader.setInt("_Material.hasBump", mMaterial.hasBump);
 
-		glActiveTexture(GL_TEXTURE0);
 		glBindVertexArray(m_vao);
 		glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, NULL);
 	}

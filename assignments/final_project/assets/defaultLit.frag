@@ -31,16 +31,15 @@ struct Material{
 	vec3 diffuseColor;
 	vec3 specularColor;
 	float shininess;
+	float opacity;
+
+	bool hasDiffuse;
+	bool hasSpecular;
+	bool hasBump;
 
 	sampler2D texture_diffuse1;
 	sampler2D texture_diffuse2;
 	sampler2D texture_diffuse3;
-	sampler2D texture_specular1;
-	sampler2D texture_specular2;
-	sampler2D texture_specular3;
-	sampler2D texture_normal1;
-	sampler2D texture_normal2;
-	sampler2D texture_normal3;
 
 };
 
@@ -71,29 +70,40 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 		dist = 1;
 	}
 
+	vec3 diffuseColor = material.diffuseColor;
+	vec3 specularColor = material.specularColor;
+
+	if (material.hasDiffuse) {
+		diffuseColor *= vec3(texture(material.texture_diffuse1, fs_in.UV));
+	} 
+	/*
+	if (material.hasSpecular) {
+		specularColor *= vec3(texture(material.texture_specular1, fs_in.UV));
+	}*/
+
 	float attenuation = 1.0 / (light.constant + light.linear * dist + light.quadratic * (dist * dist));
 
 	// calculate the light intensity (I0 is just light.color)
 	float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
 
-	vec3 diffuse = light.color * diffuseFloat * vec3(texture(material.texture_diffuse1, fs_in.UV));
+	vec3 diffuse = diffuseFloat * diffuseColor;
 
 	// specular lighting
 	vec3 halfway = normalize(lightDirection + camView);
 
 	float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess) * light.strength;
 	
-	vec3 specular = specularFloat * vec3(texture(material.texture_specular1, fs_in.UV));
+	vec3 specular = specularFloat * specularColor;
 
-	float ambient = 0.15;
+	vec3 ambient = 0.15 * diffuseColor;
 
 	ambient *= attenuation;
 	diffuse *= attenuation;
 	specular *= attenuation;
 
-	vec3 outColor = (light.color * ambient * material.diffuseColor);
-	outColor += light.color * diffuse * material.diffuseColor;
-	outColor += light.color * specular * material.specularColor;
+	vec3 outColor = light.color * ambient;
+	outColor += light.color * diffuse;
+	outColor += light.color * specular;
 
 	return outColor;
 }
@@ -109,8 +119,14 @@ void main(){
 		result += MakeLight(_Lights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
 	}
 
-	vec4 colorTexture = texture(_Material.texture_diffuse1,fs_in.UV);
+	vec4 color;
 
 
-	FragColor = vec4(result, 1.0) * colorTexture;
+	if (_Material.hasDiffuse) {
+		color = texture(_Material.texture_diffuse1,fs_in.UV);
+	} else {
+		color = vec4(_Material.diffuseColor, _Material.opacity);
+	}
+
+	FragColor = vec4(result, 1.0) * color;
 }

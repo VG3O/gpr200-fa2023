@@ -101,34 +101,40 @@ namespace vg3o {
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* meshMaterial = scene->mMaterials[mesh->mMaterialIndex];
+			Material newMat;
+
 			std::vector<ew::Texture> diffuseMaps = loadMaterialTextures(meshMaterial, aiTextureType_DIFFUSE, "texture_diffuse");
 			meshData.textures.insert(meshData.textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+			if (diffuseMaps.size() > 0) { newMat.hasDiffuse = true; }
 
 			std::vector<ew::Texture> specularMaps = loadMaterialTextures(meshMaterial, aiTextureType_SPECULAR, "texture_specular");
 			meshData.textures.insert(meshData.textures.end(), specularMaps.begin(), specularMaps.end());
+			if (specularMaps.size() > 0) { newMat.hasSpecular = true; }
 
 			std::vector<ew::Texture> normalMaps = loadMaterialTextures(meshMaterial, aiTextureType_HEIGHT, "texture_normal");
 			meshData.textures.insert(meshData.textures.end(), normalMaps.begin(), normalMaps.end());
+			if (normalMaps.size() > 0) { newMat.hasBump = true; }
 
 			aiColor3D diffuseColor(0.f, 0.f, 0.f);
 			aiColor3D ambientColor(0.f, 0.f, 0.f);
 			aiColor3D specularColor(0.f, 0.f, 0.f);
 			aiString name;
 			float shininess = 0.f;
+			float opacity = 1.f;
 
 			meshMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
 			meshMaterial->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor);
 			meshMaterial->Get(AI_MATKEY_COLOR_SPECULAR, specularColor);
 			meshMaterial->Get(AI_MATKEY_SHININESS, shininess);
 			meshMaterial->Get(AI_MATKEY_NAME, name);
+			meshMaterial->Get(AI_MATKEY_OPACITY, opacity);
 
-			Material newMat;
 			newMat.diffuse = ew::Vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
 			newMat.ambient = ew::Vec3(ambientColor.r, ambientColor.g, ambientColor.b);
 			newMat.specular = ew::Vec3(specularColor.r, specularColor.g, specularColor.b);
 			newMat.shininess = shininess;
-
-
+			newMat.opacity = opacity;
+			
 			std::cout << "Material " << name.C_Str() << std::endl; 
 			std::cout << "Texture Count: " << diffuseMaps.size() + specularMaps.size() + normalMaps.size() << std::endl;
 			std::cout << "Diffuse: (" << newMat.diffuse.x << ", " << newMat.diffuse.y << ", " << newMat.diffuse.z << ")\n";

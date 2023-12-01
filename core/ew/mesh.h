@@ -20,6 +20,11 @@ namespace vg3o {
 		ew::Vec3 diffuse;
 		ew::Vec3 specular;
 		float shininess;
+		float opacity;
+
+		bool hasDiffuse = false;
+		bool hasSpecular = false;
+		bool hasBump = false;
 	};
 }
 
