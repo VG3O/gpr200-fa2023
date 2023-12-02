@@ -84,7 +84,7 @@ namespace ew {
 				else if (name == "texture_specular") {
 					number = std::to_string(specularNum++); 
 				}
-				shader.setInt("_Material.texture_diffuse1", i);
+				shader.setInt("texture_diffuse1", i);
 				glBindTexture(GL_TEXTURE_2D, mTextures[i].id);
 			}
 			glActiveTexture(GL_TEXTURE0);

@@ -37,10 +37,6 @@ struct Material{
 	bool hasSpecular;
 	bool hasBump;
 
-	sampler2D texture_diffuse1;
-	sampler2D texture_diffuse2;
-	sampler2D texture_diffuse3;
-
 };
 
 #define MAX_LIGHTS 6
@@ -48,6 +44,8 @@ uniform Light _Lights[MAX_LIGHTS];
 
 // material uniform
 uniform Material _Material;
+
+uniform sampler2D texture_diffuse1;
 
 // camera uniforms
 uniform vec3 _CameraPosition;
@@ -74,7 +72,7 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 	vec3 specularColor = material.specularColor;
 
 	if (material.hasDiffuse) {
-		diffuseColor *= vec3(texture(material.texture_diffuse1, fs_in.UV));
+		diffuseColor *= vec3(texture(texture_diffuse1, fs_in.UV));
 	} 
 	/*
 	if (material.hasSpecular) {
@@ -95,22 +93,19 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 	
 	vec3 specular = specularFloat * specularColor;
 
-	vec3 ambient = 0.15 * diffuseColor;
+	vec3 ambient = 0.40 * material.ambientColor;
+
+	ambient *= light.color;
+	diffuse *= light.color;
+	specular *= light.color;
 
 	ambient *= attenuation;
 	diffuse *= attenuation;
 	specular *= attenuation;
 
-	vec3 outColor = light.color * ambient;
-	outColor += light.color * diffuse;
-	outColor += light.color * specular;
-
-	return outColor;
+	return ambient + diffuse + specular;
 }
-// TODO: change material struct to include booleans for every texture type, so the textures can be-
-// excluded from the calculations and only just use the diffuse/specular base colors.
-// This should apply also to FragColor (instead of using a texture as the output use a base vec3 color like-
-// usual.
+
 void main(){
 
 	vec3 result;
@@ -120,13 +115,18 @@ void main(){
 	}
 
 	vec4 color;
-
+	vec3 color3;
+	float alpha;
 
 	if (_Material.hasDiffuse) {
-		color = texture(_Material.texture_diffuse1,fs_in.UV);
+		color = texture(texture_diffuse1,fs_in.UV);
+		color3 = color.rgb;
+		alpha = color.a;
 	} else {
-		color = vec4(_Material.diffuseColor, _Material.opacity);
+		color3 = _Material.diffuseColor;
+		alpha = _Material.opacity;
 	}
-
-	FragColor = vec4(result, 1.0) * color;
+	vec3 finalFragColor = result * color3; 
+	
+	FragColor = vec4(finalFragColor, alpha);
 }
