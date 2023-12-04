@@ -18,6 +18,7 @@
 #include <ew/cameraController.h>
 
 #include <vg3o/model.h>
+#include <vg3o/skybox.h>
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void resetCamera(ew::Camera& camera, ew::CameraController& cameraController);
@@ -96,6 +97,19 @@ int main() {
 		lightSources[i] = ew::Mesh(ew::createSphere(0.1f, 32));
 		lights[i].color = ew::Vec3(1, 1, 1);
 	}
+
+	//Sky Box set up
+	std::vector<std::string> faces
+	{
+		"right.jpg",
+		"left.jpg",
+		"top.jpg",
+		"bottom.jpg",
+		"front.jpg",
+		"back.jpg"
+	};
+
+	vg3o::loadCubemap(faces);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
