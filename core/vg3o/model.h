@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "../ew/mesh.h"
+#include "../ew/ewMath/ewMath.h"
 
 #include "texture.h"
 
@@ -32,6 +33,28 @@ namespace vg3o {
 		float constant = 1.0f;
 		float linear = 0.35f;
 		float quadratic = 0.44f;
+	};
+
+	struct SpotLight {
+		ew::Vec3 position;
+		ew::Vec3 rotation;
+		ew::Vec3 color;
+		float strength = 1.0f;
+
+		ew::Vec3 diffuse = ew::Vec3(1.f, 1.f, 1.f);
+		ew::Vec3 specular = ew::Vec3(1.f, 1.f, 1.f);
+
+		
+		float cutoff = cos(ew::DEG2RAD * 35.0f);
+	};
+
+	inline ew::Vec3 getForwardVector(ew::Vec3 rotation) {
+		ew::Vec3 radianRot = rotation * ew::DEG2RAD;
+		return ew::Vec3(
+			cos(radianRot.y) * cos(radianRot.x),
+			sin(radianRot.x),
+			sin(radianRot.y) * cos(radianRot.x)
+		);
 	};
 
 	class Model {

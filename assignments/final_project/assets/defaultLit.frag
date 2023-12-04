@@ -24,6 +24,18 @@ struct Light{
 	float quadratic;
 };
 
+struct SpotLight{
+	vec3 position;
+	vec3 direction;
+	vec3 color;
+	float strength;
+
+	vec3 diffuse;
+	vec3 specular;
+
+	float cutoff;
+};
+
 #define MAX_TEXTURES 10
 
 struct Material{
@@ -40,7 +52,8 @@ struct Material{
 };
 
 #define MAX_LIGHTS 6
-uniform Light _Lights[MAX_LIGHTS];
+uniform Light _PointLights[MAX_LIGHTS];
+uniform SpotLight _SpotLights[MAX_LIGHTS];
 
 // material uniform
 uniform Material _Material;
@@ -51,10 +64,10 @@ uniform sampler2D texture_diffuse1;
 uniform vec3 _CameraPosition;
 
 // current light count
-uniform int _LightAmount;
+uniform int _PointLightAmount;
+uniform int _SpotLightAmount;
 
-
-vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 pos)
+vec3 MakePointLight(Light light, Material material, vec3 camView, vec3 normal, vec3 pos)
 {
 	// diffuse lighting
 	// get a vector that points to the light direction
@@ -93,7 +106,7 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 	
 	vec3 specular = specularFloat * specularColor;
 
-	vec3 ambient = 0.40 * material.ambientColor;
+	vec3 ambient = 0.40 * vec3(1.0,1.0,1.0);
 
 	ambient *= light.color;
 	diffuse *= light.color;
@@ -106,12 +119,55 @@ vec3 MakeLight(Light light, Material material, vec3 camView, vec3 normal, vec3 p
 	return ambient + diffuse + specular;
 }
 
+vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal, vec3 position) {
+	vec3 OutColor;
+	vec3 lightDirection = normalize(light.position - position);
+	float theta = dot(lightDirection, normalize(-light.direction));
+
+	vec3 diffuseColor = material.diffuseColor;
+	vec3 specularColor = material.specularColor;
+
+	if (material.hasDiffuse) {
+		diffuseColor *= vec3(texture(texture_diffuse1, fs_in.UV));
+	} 
+
+	vec3 specular;
+	vec3 diffuse;
+
+	if (theta > light.cutoff) {
+		vec3 newNormal = normalize(normal);
+		float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
+
+		// specular lighting
+		vec3 halfway = normalize(lightDirection + camView);
+
+		float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess) * light.strength;
+
+		diffuse = diffuseFloat * diffuseColor;
+		specular = specularFloat * specularColor;
+		
+		diffuse *= light.color;
+		specular *= light.color;
+		OutColor = diffuse + specular;
+	}
+	else {
+		OutColor = 0.05 * diffuseColor;
+	}
+
+
+	return OutColor;
+}
+
+
 void main(){
 
 	vec3 result;
 	vec3 camera = normalize(_CameraPosition -  fs_in.WorldPosition);
-	for(int i = 0; i < _LightAmount; i++) {
-		result += MakeLight(_Lights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
+	for(int i = 0; i < _PointLightAmount; i++) {
+		result += MakePointLight(_PointLights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
+	}
+	for(int i = 0; i < _SpotLightAmount; i++) {
+		result += MakeSpotLight(_SpotLights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
 	}
 
 	vec4 color;

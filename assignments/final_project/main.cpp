@@ -81,8 +81,11 @@ int main() {
 
 	resetCamera(camera,cameraController);
 
-	vg3o::Light lights[MAX_LIGHTS]; 
-	int activeLights = 1;
+	vg3o::Light pointLights[MAX_LIGHTS]; 
+	vg3o::SpotLight spotLights[MAX_LIGHTS];
+	spotLights[0].position = ew::Vec3(2.0f, 1.5f, 0.0f);
+	int activePointLights = 1;
+	int activeSpotLights = 1;
 
 	vg3o::Model newModel("assets/cars/gtr/gtr-exported.obj");
 
@@ -91,12 +94,20 @@ int main() {
 
 	// light source meshes
 	ew::Mesh lightSources[MAX_LIGHTS];
+	ew::Mesh spotLightSources[MAX_LIGHTS];
+
 	ew::Transform lightSourceTransforms[MAX_LIGHTS];
+	ew::Transform spotLightSourceTransforms[MAX_LIGHTS];
+
+	ew::Vec3 sourceOffset = ew::Vec3(-90.0f, -90.0f, 0.0f);
 	for (int i = 0; i < MAX_LIGHTS; i++) {
 		lightSources[i] = ew::Mesh(ew::createSphere(0.1f, 32));
-		lights[i].color = ew::Vec3(1, 1, 1);
+		pointLights[i].color = ew::Vec3(1, 1, 1);
 	}
-
+	for (int i = 0; i < MAX_LIGHTS; i++) {
+		spotLightSources[i] = ew::Mesh(ew::createCylinder(0.1f, 0.25f, 32));
+		spotLights[i].color = ew::Vec3(1, 1, 1);
+	}
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
@@ -123,28 +134,47 @@ int main() {
 		newModel.draw(shader);
 
 		// light setup
-		shader.setInt("_LightAmount", activeLights);
-		for (int i = 0; i < activeLights; i++) {
-			shader.setVec3("_Lights["+ std::to_string(i) +"].position", lights[i].position);
-			shader.setVec3("_Lights[" + std::to_string(i) + "].color", lights[i].color);
-			shader.setFloat("_Lights[" + std::to_string(i) + "].strength", lights[i].strength);
+		shader.setInt("_PointLightAmount", activePointLights);
+		for (int i = 0; i < activePointLights; i++) {
+			shader.setVec3("_PointLights["+ std::to_string(i) +"].position", pointLights[i].position);
+			shader.setVec3("_PointLights[" + std::to_string(i) + "].color", pointLights[i].color);
+			shader.setFloat("_PointLights[" + std::to_string(i) + "].strength", pointLights[i].strength);
 
-			shader.setVec3("_Lights[" + std::to_string(i) + "].diffuse", lights[i].diffuse);
-			shader.setVec3("_Lights[" + std::to_string(i) + "].specular", lights[i].specular);
+			shader.setVec3("_PointLights[" + std::to_string(i) + "].diffuse", pointLights[i].diffuse);
+			shader.setVec3("_PointLights[" + std::to_string(i) + "].specular", pointLights[i].specular);
 
-			shader.setFloat("_Lights[" + std::to_string(i) + "].constant", lights[i].constant);
-			shader.setFloat("_Lights[" + std::to_string(i) + "].linear", lights[i].linear);
-			shader.setFloat("_Lights[" + std::to_string(i) + "].quadratic", lights[i].quadratic);
+			shader.setFloat("_PointLights[" + std::to_string(i) + "].constant", pointLights[i].constant);
+			shader.setFloat("_PointLights[" + std::to_string(i) + "].linear", pointLights[i].linear);
+			shader.setFloat("_PointLights[" + std::to_string(i) + "].quadratic", pointLights[i].quadratic);
+		}
+		shader.setInt("_SpotLightAmount", activeSpotLights);
+		for (int i = 0; i < activeSpotLights; i++) {
+			shader.setVec3("_SpotLights[" + std::to_string(i) + "].position", spotLights[i].position);
+			shader.setVec3("_SpotLights[" + std::to_string(i) + "].direction", vg3o::getForwardVector(spotLights[i].rotation));
+			shader.setVec3("_SpotLights[" + std::to_string(i) + "].color", spotLights[i].color);
+			shader.setFloat("_SpotLights[" + std::to_string(i) + "].strength", spotLights[i].strength);
+
+			shader.setVec3("_SpotLights[" + std::to_string(i) + "].diffuse", spotLights[i].diffuse);
+			shader.setVec3("_SpotLights[" + std::to_string(i) + "].specular", spotLights[i].specular);
+
+			shader.setFloat("_SpotLights[" + std::to_string(i) + "].cutoff", spotLights[i].cutoff);
 		}
 	
 		unlitShader.use();
 		unlitShader.setMat4("_ViewProjection", camera.ProjectionMatrix() * camera.ViewMatrix());
 
-		for (int i = 0; i < activeLights; i++) {
-			lightSourceTransforms[i].position = lights[i].position;
+		for (int i = 0; i < activePointLights; i++) {
+			lightSourceTransforms[i].position = pointLights[i].position;
 			unlitShader.setMat4("_Model", lightSourceTransforms[i].getModelMatrix());
-			unlitShader.setVec3("_Color", lights[i].color);
+			unlitShader.setVec3("_Color", pointLights[i].color);
 			lightSources[i].draw();
+		}
+		for (int i = 0; i < activeSpotLights; i++) {
+			spotLightSourceTransforms[i].position = spotLights[i].position;
+			spotLightSourceTransforms[i].rotation = sourceOffset + spotLights[i].rotation;
+			unlitShader.setMat4("_Model", spotLightSourceTransforms[i].getModelMatrix());
+			unlitShader.setVec3("_Color", spotLights[i].color);
+			spotLightSources[i].draw();
 		}
 
 		//Render UI
@@ -172,19 +202,32 @@ int main() {
 					resetCamera(camera, cameraController);
 				}
 			}
-			ImGui::SliderInt("Light Amount", &activeLights, 0, MAX_LIGHTS);
-			for (int i = 0; i < activeLights; i++) {
+			ImGui::SliderInt("Point Light Amount", &activePointLights, 0, MAX_LIGHTS);
+			ImGui::SliderInt("Spot Light Amount", &activeSpotLights, 0, MAX_LIGHTS);
+			for (int i = 0; i < activePointLights; i++) {
+				std::string str = "Point Light " + std::to_string(i);
 				ImGui::PushID(i);
-				if (ImGui::CollapsingHeader("Light")) {
-					ImGui::DragFloat3("Position", &lights[i].position.x, 0.01f);
-					ImGui::DragFloat3("Color", &lights[i].color.x, 0.01f, 0.0f, 1.0f);
-					ImGui::DragFloat("Strength", &lights[i].strength, 0.01f, 0.0f, 10.0f);
-					ImGui::DragFloat("Linear Coef", &lights[i].linear, 0.001f, 0.001f, 1.0f);
-					ImGui::DragFloat("Quadratic Coef", &lights[i].quadratic, 0.001f, 0.001f, 2.0f);
+				if (ImGui::CollapsingHeader(str.c_str())) {
+					ImGui::DragFloat3("Position", &pointLights[i].position.x, 0.01f);
+					ImGui::DragFloat3("Color", &pointLights[i].color.x, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Strength", &pointLights[i].strength, 0.01f, 0.0f, 10.0f);
+					ImGui::DragFloat("Linear Coef", &pointLights[i].linear, 0.001f, 0.001f, 1.0f);
+					ImGui::DragFloat("Quadratic Coef", &pointLights[i].quadratic, 0.001f, 0.001f, 2.0f);
 				}
 				ImGui::PopID();
 			}
-
+			for (int i = 0; i < activeSpotLights; i++) {
+				std::string str = "Spot Light " + std::to_string(i);
+				ImGui::PushID(i);
+				if (ImGui::CollapsingHeader(str.c_str())) {
+					ImGui::DragFloat3("Position", &spotLights[i].position.x, 0.01f);
+					ImGui::DragFloat3("Rotation", &spotLights[i].rotation.x, 1.0f);
+					ImGui::DragFloat3("Color", &spotLights[i].color.x, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat("Strength", &spotLights[i].strength, 0.01f, 0.0f, 10.0f);
+				}
+				ImGui::PopID();
+			}
+			
 			ImGui::ColorEdit3("BG color", &bgColor.x);
 			ImGui::End();
 			

@@ -90,7 +90,7 @@ int main() {
 
 	ew::Transform planeTransform;
 	planeTransform.position = ew::Vec3(1.0f, 0.0f, 0.0f);
-	planeTransform.rotation = ew::Vec3(45.0f, 0.0f, 0.0f);
+	planeTransform.rotation = ew::Vec3(45.0f, 45.0f, 0.0f);
 
 	// cylinder
 	ew::MeshData cylinderMeshData = vg3o::createCylinder(0.5f, 0.25f, 20);
