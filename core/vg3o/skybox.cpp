@@ -3,12 +3,12 @@
 #include "../ew/external/stb_image.h"
 #include "skybox.h"
 
+#include <vector>
+
 namespace vg3o
-{
-	
-	
+{	
 	unsigned int loadCubemap(std::vector<std::string> faces)
-	{
+	{	
 		unsigned int textureID;
 		glGenTextures(1, &textureID);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
