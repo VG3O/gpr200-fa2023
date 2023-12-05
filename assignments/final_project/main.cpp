@@ -85,6 +85,7 @@ int main() {
 	vg3o::Light pointLights[MAX_LIGHTS]; 
 	vg3o::SpotLight spotLights[MAX_LIGHTS];
 	spotLights[0].position = ew::Vec3(2.0f, 1.5f, 0.0f);
+	spotLights[0].rotation = ew::Vec3(0.0f, 180.0f, 0.0f);
 	int activePointLights = 1;
 	int activeSpotLights = 1;
 
@@ -123,6 +124,8 @@ int main() {
 	vg3o::loadCubemap(faces);
 	
 	float tweenTime = 0;
+	bool reverse = true;
+	bool animating = true;
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -150,7 +153,7 @@ int main() {
 		newModel.draw(shader);
 		
 		tweenTime += deltaTime;
-		if (tweenTime >= 4.0f) { tweenTime = 0.f; }
+		if (tweenTime >= 1.25f) { tweenTime = 0.0f; reverse = !reverse; }
 
 		// light setup
 		shader.setInt("_PointLightAmount", activePointLights);
@@ -168,7 +171,7 @@ int main() {
 		}
 		shader.setInt("_SpotLightAmount", activeSpotLights);
 		for (int i = 0; i < activeSpotLights; i++) {
-			spotLights[i].strength = vg3o::GetTweenValue(0.f, 10.f, tweenTime / 4.f, vg3o::QUARTIC, true);
+			if (animating) { spotLights[i].strength = vg3o::GetTweenValue(0.0f, 10.0f, tweenTime / 0.32f, vg3o::QUINTIC); }
 
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].position", spotLights[i].position);
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].direction", vg3o::getForwardVector(spotLights[i].rotation));
@@ -223,6 +226,7 @@ int main() {
 					resetCamera(camera, cameraController);
 				}
 			}
+			ImGui::Checkbox("Animating", &animating);
 			ImGui::SliderInt("Point Light Amount", &activePointLights, 0, MAX_LIGHTS);
 			ImGui::SliderInt("Spot Light Amount", &activeSpotLights, 0, MAX_LIGHTS);
 			for (int i = 0; i < activePointLights; i++) {
@@ -239,7 +243,7 @@ int main() {
 			}
 			for (int i = 0; i < activeSpotLights; i++) {
 				std::string str = "Spot Light " + std::to_string(i);
-				ImGui::PushID(i);
+				ImGui::PushID(i + activePointLights);
 				if (ImGui::CollapsingHeader(str.c_str())) {
 					ImGui::DragFloat3("Position", &spotLights[i].position.x, 0.01f);
 					ImGui::DragFloat3("Rotation", &spotLights[i].rotation.x, 1.0f);

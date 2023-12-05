@@ -134,12 +134,13 @@ namespace vg3o {
 			newMat.specular = ew::Vec3(specularColor.r, specularColor.g, specularColor.b);
 			newMat.shininess = shininess;
 			newMat.opacity = opacity;
-			
+			/*
 			std::cout << "Material " << name.C_Str() << std::endl; 
 			std::cout << "Texture Count: " << diffuseMaps.size() + specularMaps.size() + normalMaps.size() << std::endl;
 			std::cout << "Diffuse: (" << newMat.diffuse.x << ", " << newMat.diffuse.y << ", " << newMat.diffuse.z << ")\n";
 			std::cout << "Specular: (" << newMat.specular.x << ", " << newMat.specular.y << ", " << newMat.specular.z << ")\n";
 			std::cout << "Specular Shininess: " << newMat.shininess << std::endl << std::endl;
+			*/
 			meshData.material = newMat;
 		}
 

@@ -106,7 +106,7 @@ vec3 MakePointLight(Light light, Material material, vec3 camView, vec3 normal, v
 	
 	vec3 specular = specularFloat * specularColor;
 
-	vec3 ambient = 0.40 * vec3(1.0,1.0,1.0);
+	vec3 ambient = 0.40 * diffuseColor;
 
 	ambient *= light.color;
 	diffuse *= light.color;
@@ -130,7 +130,7 @@ vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal
 	if (material.hasDiffuse) {
 		diffuseColor *= vec3(texture(texture_diffuse1, fs_in.UV));
 	} 
-
+	vec3 ambient = 0.40 * diffuseColor * light.color;
 	vec3 specular;
 	vec3 diffuse;
 
@@ -148,10 +148,10 @@ vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal
 		
 		diffuse *= light.color;
 		specular *= light.color;
-		OutColor = diffuse + specular;
+		OutColor = ambient + diffuse + specular;
 	}
 	else {
-		OutColor = 0.05 * diffuseColor;
+		OutColor = ambient;
 	}
 
 

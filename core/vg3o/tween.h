@@ -7,6 +7,7 @@
 
 #include "../ew/ewMath/ewMath.h"
 
+
 namespace vg3o {
 	
 	enum InterpolationType {
@@ -30,6 +31,7 @@ namespace vg3o {
 	inline float GetTweenValue(float start, float goal, float alpha, InterpolationType style, bool reverses = false) {
 		float diff = goal - start;
 		if (reverses) { alpha = 1.f - alpha; }
+		alpha = std::min(alpha, 1.f);
 		return start + (diff * pow(alpha, style));
 	};
 }
