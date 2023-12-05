@@ -19,6 +19,7 @@
 
 #include <vg3o/model.h>
 #include <vg3o/skybox.h>
+#include <vg3o/tween.h>
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void resetCamera(ew::Camera& camera, ew::CameraController& cameraController);
@@ -53,7 +54,6 @@ int main() {
 		printf("GLAD Failed to load GL headers");
 		return 1;
 	}
-
 
 	//Initialize ImGUI
 	IMGUI_CHECKVERSION();
@@ -121,6 +121,8 @@ int main() {
 	};
 
 	vg3o::loadCubemap(faces);
+	
+	float tweenTime = 0;
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -143,9 +145,12 @@ int main() {
 		shader.setVec3("_CameraPosition", camera.position);
 		
 		//Draw models
-
+		
 		shader.setMat4("_Model", modelTransform.getModelMatrix());
 		newModel.draw(shader);
+		
+		tweenTime += deltaTime;
+		if (tweenTime >= 4.0f) { tweenTime = 0.f; }
 
 		// light setup
 		shader.setInt("_PointLightAmount", activePointLights);
@@ -163,6 +168,8 @@ int main() {
 		}
 		shader.setInt("_SpotLightAmount", activeSpotLights);
 		for (int i = 0; i < activeSpotLights; i++) {
+			spotLights[i].strength = vg3o::GetTweenValue(0.f, 10.f, tweenTime / 4.f, vg3o::QUARTIC, true);
+
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].position", spotLights[i].position);
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].direction", vg3o::getForwardVector(spotLights[i].rotation));
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].color", spotLights[i].color);
