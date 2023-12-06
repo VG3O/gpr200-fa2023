@@ -33,7 +33,11 @@ struct SpotLight{
 	vec3 diffuse;
 	vec3 specular;
 
+	float linear;
+	float quadratic;
+
 	float cutoff;
+	float outerCutoff;
 };
 
 #define MAX_TEXTURES 10
@@ -116,13 +120,18 @@ vec3 MakePointLight(Light light, Material material, vec3 camView, vec3 normal, v
 	diffuse *= attenuation;
 	specular *= attenuation;
 
-	return ambient + diffuse + specular;
+	return diffuse + specular;
 }
 
 vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal, vec3 position) {
 	vec3 OutColor;
 	vec3 lightDirection = normalize(light.position - position);
+
+	float dist = length(light.position-position);
+
 	float theta = dot(lightDirection, normalize(-light.direction));
+	float epsilon = light.cutoff - light.outerCutoff;
+	float intensity = smoothstep(0.0, 1.0, (theta - light.outerCutoff) / epsilon);
 
 	vec3 diffuseColor = material.diffuseColor;
 	vec3 specularColor = material.specularColor;
@@ -130,30 +139,33 @@ vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal
 	if (material.hasDiffuse) {
 		diffuseColor *= vec3(texture(texture_diffuse1, fs_in.UV));
 	} 
-	vec3 ambient = 0.40 * diffuseColor * light.color;
+	vec3 ambient = 0.40 * diffuseColor;
 	vec3 specular;
 	vec3 diffuse;
 
-	if (theta > light.cutoff) {
-		vec3 newNormal = normalize(normal);
-		float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
+	vec3 newNormal = normalize(normal);
+	float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
 
-		// specular lighting
-		vec3 halfway = normalize(lightDirection + camView);
+	// specular lighting
+	vec3 halfway = normalize(lightDirection + camView);
 
-		float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess) * light.strength;
+	float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess) * light.strength;
 
-		diffuse = diffuseFloat * diffuseColor;
-		specular = specularFloat * specularColor;
+	float attenuation = 1.0 / (1.0 + light.linear * dist + light.quadratic * (dist * dist));
+
+	diffuse = diffuseFloat * diffuseColor;
+	specular = specularFloat * specularColor;
 		
-		diffuse *= light.color;
-		specular *= light.color;
-		OutColor = ambient + diffuse + specular;
-	}
-	else {
-		OutColor = ambient;
-	}
+	diffuse *= light.color;
+	specular *= light.color;
 
+	diffuse *= attenuation;
+	specular *= attenuation;
+
+	diffuse *= intensity;
+	specular *= intensity;
+
+	OutColor = diffuse + specular;
 
 	return OutColor;
 }
@@ -169,6 +181,7 @@ void main(){
 	for(int i = 0; i < _SpotLightAmount; i++) {
 		result += MakeSpotLight(_SpotLights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
 	}
+	result += vec3(.3,.3,.3);
 
 	vec4 color;
 	vec3 color3;

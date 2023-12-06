@@ -181,7 +181,10 @@ int main() {
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].diffuse", spotLights[i].diffuse);
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].specular", spotLights[i].specular);
 
-			shader.setFloat("_SpotLights[" + std::to_string(i) + "].cutoff", spotLights[i].cutoff);
+			shader.setFloat("_SpotLights[" + std::to_string(i) + "].cutoff", cos(spotLights[i].cutoff * ew::DEG2RAD));
+			shader.setFloat("_SpotLights[" + std::to_string(i) + "].outerCutoff", cos(spotLights[i].outerCutoff * ew::DEG2RAD));
+			shader.setFloat("_SpotLights[" + std::to_string(i) + "].linear", spotLights[i].linear);
+			shader.setFloat("_SpotLights[" + std::to_string(i) + "].quadratic", spotLights[i].quadratic);
 		}
 	
 		unlitShader.use();
@@ -235,9 +238,9 @@ int main() {
 				if (ImGui::CollapsingHeader(str.c_str())) {
 					ImGui::DragFloat3("Position", &pointLights[i].position.x, 0.01f);
 					ImGui::DragFloat3("Color", &pointLights[i].color.x, 0.01f, 0.0f, 1.0f);
-					ImGui::DragFloat("Strength", &pointLights[i].strength, 0.01f, 0.0f, 10.0f);
-					ImGui::DragFloat("Linear Coef", &pointLights[i].linear, 0.001f, 0.001f, 1.0f);
-					ImGui::DragFloat("Quadratic Coef", &pointLights[i].quadratic, 0.001f, 0.001f, 2.0f);
+					ImGui::DragFloat("Strength", &pointLights[i].strength, 0.01f, 0.0f, 1000.0f);
+					ImGui::DragFloat("Linear Coef", &pointLights[i].linear, 0.001f, 0.001f, 5.0f);
+					ImGui::DragFloat("Quadratic Coef", &pointLights[i].quadratic, 0.001f, 0.001f, 5.0f);
 				}
 				ImGui::PopID();
 			}
@@ -248,7 +251,12 @@ int main() {
 					ImGui::DragFloat3("Position", &spotLights[i].position.x, 0.01f);
 					ImGui::DragFloat3("Rotation", &spotLights[i].rotation.x, 1.0f);
 					ImGui::DragFloat3("Color", &spotLights[i].color.x, 0.01f, 0.0f, 1.0f);
-					ImGui::DragFloat("Strength", &spotLights[i].strength, 0.01f, 0.0f, 10.0f);
+					ImGui::DragFloat("Strength", &spotLights[i].strength, 1.0f, 0.0f, 1000.0f);
+					ImGui::DragFloat("Linear Coef", &spotLights[i].linear, 0.001f, 0.001f, 5.0f);
+					ImGui::DragFloat("Quadratic Coef", &spotLights[i].quadratic, 0.001f, 0.001f, 5.0f);
+					ImGui::DragFloat("Inner Cutoff", &spotLights[i].cutoff, 0.5f, 1.0f, 90.0f);
+					ImGui::DragFloat("Outer Cutoff", &spotLights[i].outerCutoff, 0.5f, 1.0f, 90.0f);
+					
 				}
 				ImGui::PopID();
 			}
