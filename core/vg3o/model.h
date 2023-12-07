@@ -3,7 +3,7 @@
 	28 December 2023
 
 	model.h
-	Description: This model class allows for multiple model objects to be created and loaded into an OpenGL scene. It also houses some important lighting functions as well. 
+	Description: This model class allows for multiple model objects to be created and loaded into an OpenGL scene. It also houses some important lighting functions as well.
 */
 
 #pragma once
@@ -26,13 +26,9 @@ namespace vg3o {
 		float strength = 1.0f;
 
 		ew::Vec3 diffuse = ew::Vec3(1.f, 1.f, 1.f);
-		ew::Vec3 specular = ew::Vec3(1.f,1.f,1.f);
+		ew::Vec3 specular = ew::Vec3(1.f, 1.f, 1.f);
 
-		// these values determine attenuation
-		// default values are for 13 distance
-		float constant = 1.0f;
-		float linear = 0.35f;
-		float quadratic = 0.44f;
+		float radius = 5.0f;
 	};
 
 	struct SpotLight {
@@ -44,8 +40,7 @@ namespace vg3o {
 		ew::Vec3 diffuse = ew::Vec3(1.f, 1.f, 1.f);
 		ew::Vec3 specular = ew::Vec3(1.f, 1.f, 1.f);
 
-		float linear = 0.35f;
-		float quadratic = 0.44f;
+		float range = 5.0f;
 
 		float cutoff = 20.0f;
 		float outerCutoff = 23.5f;
@@ -105,7 +100,7 @@ namespace vg3o {
 	public:
 		Model() {};
 		Model(const std::string& path);
-		void draw(ew::Shader &shader) {
+		void draw(ew::Shader& shader) {
 			for (unsigned int i = 0; i < meshes.size(); i++)
 				meshes[i].drawLoadTex(shader);
 		};
@@ -119,7 +114,7 @@ namespace vg3o {
 		void loadModel(const std::string& path);
 		void processAssimpNode(aiNode* node, const aiScene* scene);
 		ew::Mesh processAssimpMesh(aiMesh* mesh, const aiScene* scene);
-		
+
 		std::vector<ew::Texture> loadMaterialTextures(aiMaterial* material, aiTextureType type, std::string typeName);
 	};
 }
