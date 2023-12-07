@@ -96,8 +96,8 @@ vec3 MakePointLight(Light light, Material material, vec3 camView, vec3 normal, v
 		specularColor *= vec3(texture(material.texture_specular1, fs_in.UV));
 	}*/
 
-	float clampedDistance = clamp(dist, 0.0, 5.0);
-	float attenuation = pow(1.0 - (clampedDistance / 5.0), 5.0);
+	float clampedDistance = clamp(dist, 0.0, 2.0);
+	float attenuation = pow(1.0 - (clampedDistance / 2.0), 2.0);
 
 	// calculate the light intensity (I0 is just light.color)
 	float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
@@ -155,7 +155,7 @@ vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal
 	specular *= light.color;
 
 	diffuse *= intensity;
-	diffuse *= intensity;
+	specular *= intensity;
 
 	OutColor = diffuse + specular;
 
