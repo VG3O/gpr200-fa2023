@@ -18,10 +18,7 @@ struct Light{
 	vec3 diffuse;
 	vec3 specular;
 	
-	// light properties
-	float constant;
-	float linear;
-	float quadratic;
+	float radius;
 };
 
 struct SpotLight{
@@ -33,8 +30,7 @@ struct SpotLight{
 	vec3 diffuse;
 	vec3 specular;
 
-	float linear;
-	float quadratic;
+	float range;
 
 	float cutoff;
 	float outerCutoff;
@@ -96,8 +92,8 @@ vec3 MakePointLight(Light light, Material material, vec3 camView, vec3 normal, v
 		specularColor *= vec3(texture(material.texture_specular1, fs_in.UV));
 	}*/
 
-	float clampedDistance = clamp(dist, 0.0, 2.0);
-	float attenuation = pow(1.0 - (clampedDistance / 2.0), 2.0);
+	float clampedDistance = clamp(dist, 0.0, light.radius);
+	float attenuation = pow(1.0 - (clampedDistance / light.radius), 2.0);
 
 	// calculate the light intensity (I0 is just light.color)
 	float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
@@ -130,6 +126,9 @@ vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal
 	float epsilon = light.cutoff - light.outerCutoff;
 	float intensity = smoothstep(0.0, 1.0, (theta - light.outerCutoff) / epsilon);
 
+	float clampedDistance = clamp(dist, 0.0, light.range);
+	float attenuation = pow(1.0 - (clampedDistance / light.range), 2.0);
+
 	vec3 diffuseColor = material.diffuseColor;
 	vec3 specularColor = material.specularColor;
 
@@ -154,8 +153,8 @@ vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal
 	diffuse *= light.color;
 	specular *= light.color;
 
-	diffuse *= intensity;
-	specular *= intensity;
+	diffuse *= intensity * attenuation;
+	specular *= intensity * attenuation;
 
 	OutColor = diffuse + specular;
 
@@ -173,7 +172,7 @@ void main(){
 	for(int i = 0; i < _SpotLightAmount; i++) {
 		result += MakeSpotLight(_SpotLights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
 	}
-	result += vec3(.3,.3,.3);
+	result += vec3(.15,.15,.15);
 
 	vec4 color;
 	vec3 color3;
