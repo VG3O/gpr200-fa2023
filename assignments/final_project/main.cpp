@@ -19,7 +19,7 @@
 
 #include <vg3o/model.h>
 #include <vg3o/skybox.h>
-#include <vg3o/tween.h>
+#include <vg3o/cutscene.h>
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void resetCamera(ew::Camera& camera, ew::CameraController& cameraController);
@@ -42,6 +42,8 @@ int main() {
 		return 1;
 	}
 
+	glfwWindowHint(GLFW_SAMPLES, 4);
+
 	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Camera", NULL, NULL);
 	if (window == NULL) {
 		printf("GLFW failed to create window");
@@ -62,6 +64,7 @@ int main() {
 	ImGui_ImplOpenGL3_Init();
 
 	//Global settings
+	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
@@ -127,6 +130,13 @@ int main() {
 	bool reverse = true;
 	bool animating = true;
 
+	float valueToRead = 0.0f;
+	vg3o::CutsceneEvent<float> newEvent;
+	newEvent.valueReference = &valueToRead;
+	newEvent.startValue = 0.0f;
+	newEvent.targetValue = 5.0f;
+	newEvent.
+
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
@@ -171,8 +181,6 @@ int main() {
 		}
 		shader.setInt("_SpotLightAmount", activeSpotLights);
 		for (int i = 0; i < activeSpotLights; i++) {
-			if (animating) { spotLights[i].strength = vg3o::GetTweenValue(0.0f, 10.0f, tweenTime / 0.32f, vg3o::QUINTIC); }
-
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].position", spotLights[i].position);
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].direction", vg3o::getForwardVector(spotLights[i].rotation));
 			shader.setVec3("_SpotLights[" + std::to_string(i) + "].color", spotLights[i].color);
