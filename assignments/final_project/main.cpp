@@ -113,19 +113,65 @@ int main() {
 		spotLightSources[i] = ew::Mesh(ew::createCylinder(0.1f, 0.25f, 32));
 		spotLights[i].color = ew::Vec3(1, 1, 1);
 	}
+
 	//Sky Box set up
 	std::vector<std::string> faces
 	{
-		"right.jpg",
-		"left.jpg",
-		"top.jpg",
-		"bottom.jpg",
-		"front.jpg",
-		"back.jpg"
+		"assets/skybox/right.png",
+		"assets/skybox/left.png",
+		"assets/skybox/top.png",
+		"assets/skybox/bottom.png",
+		"assets/skybox/front.png",
+		"assets/skybox/back.png"
 	};
 
-	vg3o::loadCubemap(faces);
+	unsigned int cubemapTexture = vg3o::loadCubemap(faces);
 	
+	float skyboxVertices[] = {
+		// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+	};
+
 	float tweenTime = 0;
 	bool reverse = true;
 	bool animating = true;
@@ -135,7 +181,6 @@ int main() {
 	newEvent.valueReference = &valueToRead;
 	newEvent.startValue = 0.0f;
 	newEvent.targetValue = 5.0f;
-	newEvent.
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -152,11 +197,23 @@ int main() {
 		glClearColor(bgColor.x, bgColor.y,bgColor.z,1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// Skybox draw
+		glDepthMask(GL_FALSE);
+		unlitShader.use();
+
 		shader.use();
 
 		shader.setMat4("_ViewProjection", camera.ProjectionMatrix() * camera.ViewMatrix());
 		shader.setVec3("_CameraPosition", camera.position);
-		
+
+		unsigned int shaderVao = vg3o::createVAO(skyboxVertices, 4);
+		glGenVertexArrays(1, &shaderVao);
+
+		glBindVertexArray(shaderVao);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDepthMask(GL_TRUE);
+
 		//Draw models
 		
 		shader.setMat4("_Model", modelTransform.getModelMatrix());
