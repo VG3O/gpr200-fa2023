@@ -130,12 +130,18 @@ int main() {
 	bool reverse = true;
 	bool animating = true;
 
+	vg3o::Cutscene cutscene = vg3o::Cutscene(10.0f);
+
 	float valueToRead = 0.0f;
 	vg3o::CutsceneEvent<float> newEvent;
 	newEvent.valueReference = &valueToRead;
 	newEvent.startValue = 0.0f;
 	newEvent.targetValue = 5.0f;
-	newEvent.
+	newEvent.duration = 5.0f;
+	newEvent.startTime = 10.0f;
+	newEvent.style = vg3o::LINEAR;
+
+	cutscene.AddEvent(newEvent);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -151,6 +157,9 @@ int main() {
 		//RENDER
 		glClearColor(bgColor.x, bgColor.y,bgColor.z,1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		cutscene.Update(deltaTime);
+		std::cout << "Value: " << valueToRead << std::endl;
 
 		shader.use();
 
@@ -175,9 +184,7 @@ int main() {
 			shader.setVec3("_PointLights[" + std::to_string(i) + "].diffuse", pointLights[i].diffuse);
 			shader.setVec3("_PointLights[" + std::to_string(i) + "].specular", pointLights[i].specular);
 
-			shader.setFloat("_PointLights[" + std::to_string(i) + "].constant", pointLights[i].constant);
-			shader.setFloat("_PointLights[" + std::to_string(i) + "].linear", pointLights[i].linear);
-			shader.setFloat("_PointLights[" + std::to_string(i) + "].quadratic", pointLights[i].quadratic);
+			shader.setFloat("_PointLights[" + std::to_string(i) + "].radius", pointLights[i].radius);
 		}
 		shader.setInt("_SpotLightAmount", activeSpotLights);
 		for (int i = 0; i < activeSpotLights; i++) {
@@ -191,8 +198,7 @@ int main() {
 
 			shader.setFloat("_SpotLights[" + std::to_string(i) + "].cutoff", cos(spotLights[i].cutoff * ew::DEG2RAD));
 			shader.setFloat("_SpotLights[" + std::to_string(i) + "].outerCutoff", cos(spotLights[i].outerCutoff * ew::DEG2RAD));
-			shader.setFloat("_SpotLights[" + std::to_string(i) + "].linear", spotLights[i].linear);
-			shader.setFloat("_SpotLights[" + std::to_string(i) + "].quadratic", spotLights[i].quadratic);
+			shader.setFloat("_SpotLights[" + std::to_string(i) + "].range", spotLights[i].range);
 		}
 	
 		unlitShader.use();
@@ -247,8 +253,7 @@ int main() {
 					ImGui::DragFloat3("Position", &pointLights[i].position.x, 0.01f);
 					ImGui::DragFloat3("Color", &pointLights[i].color.x, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Strength", &pointLights[i].strength, 0.01f, 0.0f, 1000.0f);
-					ImGui::DragFloat("Linear Coef", &pointLights[i].linear, 0.001f, 0.001f, 5.0f);
-					ImGui::DragFloat("Quadratic Coef", &pointLights[i].quadratic, 0.001f, 0.001f, 5.0f);
+					ImGui::DragFloat("Radius", &pointLights[i].radius, 0.001f, 0.001f, 10.0f);
 				}
 				ImGui::PopID();
 			}
@@ -260,8 +265,7 @@ int main() {
 					ImGui::DragFloat3("Rotation", &spotLights[i].rotation.x, 1.0f);
 					ImGui::DragFloat3("Color", &spotLights[i].color.x, 0.01f, 0.0f, 1.0f);
 					ImGui::DragFloat("Strength", &spotLights[i].strength, 1.0f, 0.0f, 1000.0f);
-					ImGui::DragFloat("Linear Coef", &spotLights[i].linear, 0.001f, 0.001f, 5.0f);
-					ImGui::DragFloat("Quadratic Coef", &spotLights[i].quadratic, 0.001f, 0.001f, 5.0f);
+					ImGui::DragFloat("Range", &spotLights[i].range, 0.001f, 0.001f, 15.0f);
 					ImGui::DragFloat("Inner Cutoff", &spotLights[i].cutoff, 0.5f, 1.0f, 90.0f);
 					ImGui::DragFloat("Outer Cutoff", &spotLights[i].outerCutoff, 0.5f, 1.0f, 90.0f);
 					

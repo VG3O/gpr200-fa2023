@@ -28,11 +28,7 @@ namespace vg3o {
 		ew::Vec3 diffuse = ew::Vec3(1.f, 1.f, 1.f);
 		ew::Vec3 specular = ew::Vec3(1.f,1.f,1.f);
 
-		// these values determine attenuation
-		// default values are for 13 distance
-		float constant = 1.0f;
-		float linear = 0.35f;
-		float quadratic = 0.44f;
+		float radius = 5.0f;
 	};
 
 	struct SpotLight {
@@ -44,8 +40,7 @@ namespace vg3o {
 		ew::Vec3 diffuse = ew::Vec3(1.f, 1.f, 1.f);
 		ew::Vec3 specular = ew::Vec3(1.f, 1.f, 1.f);
 
-		float linear = 0.35f;
-		float quadratic = 0.44f;
+		float range = 5.0f;
 
 		float cutoff = 20.0f;
 		float outerCutoff = 23.5f;
