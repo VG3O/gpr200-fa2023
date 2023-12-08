@@ -59,6 +59,7 @@ uniform SpotLight _SpotLights[MAX_LIGHTS];
 uniform Material _Material;
 
 uniform sampler2D texture_diffuse1;
+uniform samplerCube _Skybox;
 
 // camera uniforms
 uniform vec3 _CameraPosition;

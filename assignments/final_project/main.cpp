@@ -75,7 +75,7 @@ int main() {
 
 	ew::Shader shader("assets/defaultLit.vert", "assets/defaultLit.frag");
 	ew::Shader unlitShader("assets/unlit.vert", "assets/unlit.frag");
-	unsigned int brickTexture = ew::loadTexture("assets/brick_color.jpg",GL_REPEAT,GL_LINEAR);
+	ew::Shader skyboxShader("assets/skybox.vert", "assets/skybox.frag");
 
 	//Create cube
 	ew::Mesh cubeMesh(ew::createCube(1.0f));
@@ -113,19 +113,6 @@ int main() {
 		spotLightSources[i] = ew::Mesh(ew::createCylinder(0.1f, 0.25f, 32));
 		spotLights[i].color = ew::Vec3(1, 1, 1);
 	}
-
-	//Sky Box set up
-	std::vector<std::string> faces
-	{
-		"assets/skybox/right.png",
-		"assets/skybox/left.png",
-		"assets/skybox/top.png",
-		"assets/skybox/bottom.png",
-		"assets/skybox/front.png",
-		"assets/skybox/back.png"
-	};
-
-	unsigned int cubemapTexture = vg3o::loadCubemap(faces);
 	
 	float skyboxVertices[] = {
 		// positions          
@@ -172,6 +159,28 @@ int main() {
 		 1.0f, -1.0f,  1.0f
 	};
 
+	unsigned int skyboxVAO, skyboxVBO;
+	glGenVertexArrays(1, &skyboxVAO);
+	glGenBuffers(1, &skyboxVBO);
+	glBindVertexArray(skyboxVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	//Sky Box set up
+	std::vector<std::string> faces
+	{
+		"assets/skybox/right.png",
+		"assets/skybox/left.png",
+		"assets/skybox/top.png",
+		"assets/skybox/bottom.png",
+		"assets/skybox/front.png",
+		"assets/skybox/back.png"
+	};
+
+	unsigned int cubemapTexture = vg3o::loadCubemap(faces);
+
 	float tweenTime = 0;
 	bool reverse = true;
 	bool animating = true;
@@ -189,6 +198,12 @@ int main() {
 
 	cutscene.AddEvent(newEvent);
 
+	shader.use();
+	shader.setInt("_Skybox", 10);
+
+	skyboxShader.use();
+	skyboxShader.setInt("_Skybox", 10);
+
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
@@ -203,9 +218,6 @@ int main() {
 		//RENDER
 		glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		cutscene.Update(deltaTime);
-		std::cout << "Value: " << valueToRead << std::endl;
 
 		shader.use();
 
@@ -263,6 +275,19 @@ int main() {
 			unlitShader.setVec3("_Color", spotLights[i].color);
 			spotLightSources[i].draw();
 		}
+
+		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+		skyboxShader.use(); // remove translation from the view matrix
+		skyboxShader.setMat4("_View", camera.ViewMatrix());
+		skyboxShader.setMat4("_Projection", camera.ProjectionMatrix());
+		// skybox cube
+		glBindVertexArray(skyboxVAO);
+		glActiveTexture(GL_TEXTURE10);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+		glDepthFunc(GL_LESS); // set depth function back to default
+
 
 		//Render UI
 		{
