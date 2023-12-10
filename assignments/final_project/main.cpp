@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string>
+#include <random>
 
 #include <ew/external/glad.h>
 #include <ew/ewMath/ewMath.h>
@@ -85,8 +86,13 @@ int main() {
 
 	vg3o::Light pointLights[MAX_LIGHTS];
 	int pointLightTemperature[MAX_LIGHTS];
+
+	std::random_device rd;
+	std::mt19937 e(rd());
+	std::uniform_int_distribution<int> dist(2500, 13500);
+
 	for (int i = 0; i < MAX_LIGHTS; i++) {
-		pointLightTemperature[i] = 5000;
+		pointLightTemperature[i] = dist(e);
 	}
 
 	vg3o::SpotLight spotLights[MAX_LIGHTS];
@@ -176,7 +182,7 @@ int main() {
 		lightSources[i] = ew::Mesh(ew::createSphere(0.1f, 32));
 		pointLights[i].color = ew::Vec3(1, 1, 1);
 		pointLights[i].strength = 4.0f;
-		pointLights[i].radius = 2.5f;
+		pointLights[i].radius = 7.5f;
 	}
 
 	//------------------------
@@ -346,7 +352,9 @@ int main() {
 	// active booleans
 	bool headlightsActive = false;
 	bool bloom = false;
-	
+	int bufferMode = 0;
+
+	// change default camera position
 	camera.position = ew::Vec3(-8.113f, 3.866f, -11.319f);
 	camera.target = ew::Vec3(-7.499f, 3.584f, -10.582f);
 	camera.fov = 17.812f;
@@ -480,6 +488,7 @@ int main() {
 				first_iteration = false;
 
 		}
+		// swap back to the default frame buffer to render onto the quad
 		framebuffer.useDefaultBuffer();
 
 		
@@ -488,7 +497,7 @@ int main() {
 		glDisable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
+		glBindTexture(GL_TEXTURE_2D, colorBuffers[bufferMode]);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[!horizontal]);
 		framebuffer.draw();
@@ -520,10 +529,10 @@ int main() {
 			}
 			ImGui::Spacing();
 			ImGui::Spacing();
-			ImGui::Spacing();
 			ImGui::Text("Lighting Settings");;
 			ImGui::Checkbox("Bloom", &bloom);
-			ImGui::SliderInt("Light Amount", &activePointLights, 1, MAX_LIGHTS);
+			ImGui::SliderInt("Color Buffer", &bufferMode, 0, 1);
+			ImGui::SliderInt("Light Amount", &activePointLights, 0, MAX_LIGHTS);
 			if (ImGui::CollapsingHeader("Sun Settings")) {
 				ImGui::DragFloat3("Direction", &sun.direction.x, 0.01f, -1.0f, 1.0f);
 				ImGui::DragFloat("Strength", &sun.strength, 0.01f, 0.0f, 1.0f);
