@@ -74,11 +74,6 @@ namespace vg3o {
 					mesh->mTangents[i].y,
 					mesh->mTangents[i].z
 				);
-				vertex.bitangents = ew::Vec3(
-					mesh->mBitangents[i].x,
-					mesh->mBitangents[i].y,
-					mesh->mBitangents[i].z
-				);
 			}
 			else
 			{

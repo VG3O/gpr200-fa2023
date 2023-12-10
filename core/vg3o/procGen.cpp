@@ -1,4 +1,5 @@
 #include "procGen.h"
+#include <iostream>
 
 namespace vg3o {
 	ew::MeshData createSphere(float radius, int numSegments) {
@@ -135,32 +136,84 @@ namespace vg3o {
 		return newMesh;
 	}
 	ew::MeshData createPlane(float width, float height, int subdivisions) {
-		ew::MeshData newMesh = ew::MeshData();
-		// make verts
-		for (int row = 0; row <= subdivisions; row++) {
-			for (int column = 0; column <= subdivisions; column++) {
-				ew::Vertex v = ew::Vertex();
-				v.pos = ew::Vec3(width * (column / (float)subdivisions), 0, -height * (row / (float)subdivisions));
+		ew::MeshData mesh;
+		int columns = subdivisions + 1;
+		for (size_t row = 0; row <= subdivisions; row++)
+		{
+			for (size_t col = 0; col <= subdivisions; col++)
+			{
+				ew::Vertex v;
+				v.uv.x = ((float)col / subdivisions);
+				v.uv.y = ((float)row / subdivisions);
+				v.pos.x = -width / 2 + width * v.uv.x;
+				v.pos.y = 0;
+				v.pos.z = height / 2 - height * v.uv.y;
 				v.normal = ew::Vec3(0, 1, 0);
-				v.uv = ew::Vec2((column / (float)subdivisions), (row / (float)subdivisions));
-				newMesh.vertices.push_back(v);
-			}
-		} 
-		// make tris
-		int totalColumns = (subdivisions + 1);
-		for (int row = 0; row < subdivisions; row++) {
-			for (int column = 0; column < subdivisions; column++) {
-				unsigned int start = row * totalColumns + column;
-				// bottom triangle
-				newMesh.indices.push_back(start);
-				newMesh.indices.push_back(start + 1);
-				newMesh.indices.push_back(start + totalColumns + 1);
-				// top triangle
-				newMesh.indices.push_back(start + totalColumns + 1);
-				newMesh.indices.push_back(start + totalColumns);
-				newMesh.indices.push_back(start);
+				mesh.vertices.push_back(v);
 			}
 		}
-		return newMesh;
+		//INDICES
+		for (size_t row = 0; row < subdivisions; row++)
+		{
+			for (size_t col = 0; col < subdivisions; col++)
+			{
+				int start = row * columns + col;
+				// triangle 1
+				mesh.indices.push_back(start); // index 0 
+				mesh.indices.push_back(start + 1); // index 1
+				mesh.indices.push_back(start + columns + 1); // index 3
+				// triangle 2
+				mesh.indices.push_back(start + columns + 1); // index 3
+				mesh.indices.push_back(start + columns); // index 2
+				mesh.indices.push_back(start); // index 0
+			}
+		}
+
+		getTangentVectors(mesh.vertices, mesh.indices);
+
+		return mesh;
+	}
+	// thank you Michael Grieco for the tutorial on how to implement tangent space
+	void getTangentVectors(std::vector<ew::Vertex>& vertices, std::vector<unsigned int>& indices) {
+		// this exists to count the number of contributions this vertex has made
+		// to the overall tangent average
+		unsigned char* counts = (unsigned char*)malloc(vertices.size() * sizeof(unsigned char));
+		for (unsigned int i = 0; i < vertices.size(); i++) {
+			counts[i] = 0;
+		}
+
+		for (unsigned int i = 0; i < indices.size(); i += 3) {
+			ew::Vertex v1 = vertices[indices[i]];
+			ew::Vertex v2 = vertices[indices[i+1]];
+			ew::Vertex v3 = vertices[indices[i+2]];
+		
+			// triangle 1 tangents
+			ew::Vec3 tangent;
+			// get the edges to the triangle
+			ew::Vec3 edge1 = v2.pos - v1.pos;
+			ew::Vec3 edge2 = v3.pos - v1.pos;
+			// get the uv delta
+			ew::Vec2 uvDelta1 = v2.uv - v1.uv;
+			ew::Vec2 uvDelta2 = v3.uv - v1.uv;
+
+			// calculate tangent vectors for these vertices
+			float f = 1.0f / (uvDelta1.x * uvDelta2.y - uvDelta2.x * uvDelta1.y);
+			tangent.x = f * (uvDelta2.y * edge1.x - uvDelta1.y * edge2.x);
+			tangent.y = f * (uvDelta2.y * edge1.y - uvDelta1.y * edge2.y);
+			tangent.z = f * (uvDelta2.y * edge1.z - uvDelta1.y * edge2.z);
+			
+			// average vectors
+			averageVectors(vertices[indices[i]].tangent, tangent, counts[indices[i]]++);
+			averageVectors(vertices[indices[i + 1]].tangent, tangent, counts[indices[i + 1]]++);
+			averageVectors(vertices[indices[i + 2]].tangent, tangent, counts[indices[i + 2]]++);
+		}
+	}
+	void averageVectors(ew::Vec3& base, ew::Vec3 addition, unsigned char existingContributions) {
+		if (!existingContributions) { base = addition; }
+		else {
+			float f = 1 / ((float)existingContributions + 1);
+			base *= (float)(existingContributions)*f;
+			base += addition * f;
+		}
 	}
 }

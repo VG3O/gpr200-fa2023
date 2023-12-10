@@ -34,7 +34,6 @@ namespace ew {
 		ew::Vec3 normal;
 		ew::Vec2 uv;
 		ew::Vec3 tangent;
-		ew::Vec3 bitangents;
 	};
 
 	struct Texture {
@@ -63,7 +62,8 @@ namespace ew {
 		void load(const MeshData& meshData);
 		void draw(ew::DrawMode drawmode = DrawMode::TRIANGLES)const;
 		void drawLoadTex(Shader& shader) const;
-		inline std::vector<Texture> getTextures()const { return mTextures; }
+		inline void addTexture(Texture texture) { mTextures.push_back(texture); };
+		inline void setMaterial(vg3o::Material material) { mMaterial = material; };
 		inline int getNumVertices()const { return m_numVertices; }
 		inline int getNumIndices()const { return m_numIndices; }
 	private:

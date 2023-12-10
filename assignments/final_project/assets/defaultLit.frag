@@ -1,10 +1,12 @@
 #version 450
-out vec4 FragColor;
+layout (location=0) out vec4 FragColor;
+layout (location=1) out vec4 BrightColor;
 
 in Surface{
 	vec2 UV;
 	vec3 WorldPosition;
 	vec3 WorldNormal;
+	mat3 TBN;
 }fs_in;
 
 uniform sampler2D _Texture;
@@ -36,6 +38,15 @@ struct SpotLight{
 	float outerCutoff;
 };
 
+struct DirectionalLight {
+	vec3 direction;
+	float strength;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
 #define MAX_TEXTURES 10
 
 struct Material{
@@ -54,11 +65,14 @@ struct Material{
 #define MAX_LIGHTS 6
 uniform Light _PointLights[MAX_LIGHTS];
 uniform SpotLight _SpotLights[MAX_LIGHTS];
+uniform SpotLight _Headlights[5];
+uniform DirectionalLight _Sun;
 
 // material uniform
 uniform Material _Material;
 
 uniform sampler2D texture_diffuse1;
+uniform sampler2D texture_normal1;
 uniform samplerCube _Skybox;
 
 // camera uniforms
@@ -102,9 +116,9 @@ vec3 MakePointLight(Light light, Material material, vec3 camView, vec3 normal, v
 	vec3 diffuse = diffuseFloat * diffuseColor;
 
 	// specular lighting
-	vec3 halfway = normalize(lightDirection + camView);
+	vec3 halfway = normalize(lightDirection - camView);
 
-	float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess) * light.strength;
+	float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess*2.0) * light.strength;
 	
 	vec3 specular = specularFloat * specularColor;
 
@@ -118,7 +132,6 @@ vec3 MakePointLight(Light light, Material material, vec3 camView, vec3 normal, v
 }
 
 vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal, vec3 position) {
-	vec3 OutColor;
 	vec3 lightDirection = normalize(light.position - position);
 
 	float dist = length(light.position-position);
@@ -144,9 +157,9 @@ vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal
 	float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
 
 	// specular lighting
-	vec3 halfway = normalize(lightDirection + camView);
+	vec3 halfway = normalize(lightDirection - camView);
 
-	float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess) * light.strength;
+	float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess*2.0) * light.strength;
 
 	diffuse = diffuseFloat * diffuseColor;
 	specular = specularFloat * specularColor;
@@ -157,23 +170,48 @@ vec3 MakeSpotLight(SpotLight light, Material material, vec3 camView, vec3 normal
 	diffuse *= intensity * attenuation;
 	specular *= intensity * attenuation;
 
-	OutColor = diffuse + specular;
-
-	return OutColor;
+	return diffuse + specular;
 }
 
+vec3 MakeDirectionalLight(DirectionalLight light, Material material, vec3 camView, vec3 normal, vec3 position) {	
+	vec3 lightDirection = normalize(-light.direction);
+	vec3 newNormal = normalize(normal);
+
+	float diffuseFloat = (max(dot(newNormal, lightDirection),0.0)) * light.strength;
+
+	vec3 diffuse = diffuseFloat * light.diffuse;
+
+	// specular lighting
+	vec3 halfway = normalize(lightDirection - camView);
+
+	float specularFloat = pow(max(dot(newNormal, halfway), 0.0), material.shininess*2.0) * light.strength;
+	
+	vec3 specular = specularFloat * light.specular;
+
+	vec3 ambient = 0.4 * light.ambient;
+
+	return ambient + diffuse + specular;
+}
 
 void main(){
-
+	vec3 normal = fs_in.WorldNormal;
+	if (_Material.hasBump) {
+		normal = texture(texture_normal1, fs_in.UV).rgb;
+		normal = normalize(normal * 2.0 - 1.0);
+		normal = normalize(fs_in.TBN * normal);
+	}
 	vec3 result;
-	vec3 camera = normalize(_CameraPosition -  fs_in.WorldPosition);
+	vec3 camera = normalize(fs_in.WorldPosition - _CameraPosition);
+	result += MakeDirectionalLight(_Sun, _Material, camera, normal, fs_in.WorldPosition);
 	for(int i = 0; i < _PointLightAmount; i++) {
-		result += MakePointLight(_PointLights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
+		result += MakePointLight(_PointLights[i], _Material, camera, normal, fs_in.WorldPosition);
 	}
 	for(int i = 0; i < _SpotLightAmount; i++) {
-		result += MakeSpotLight(_SpotLights[i], _Material, camera, fs_in.WorldNormal, fs_in.WorldPosition);
+		result += MakeSpotLight(_SpotLights[i], _Material, camera, normal, fs_in.WorldPosition);
 	}
-	result += vec3(.15,.15,.15);
+	for(int i = 0; i < 5; i++) {
+		result += MakeSpotLight(_Headlights[i], _Material, camera, normal, fs_in.WorldPosition);
+	}
 
 	vec4 color;
 	vec3 color3;
@@ -187,7 +225,20 @@ void main(){
 		color3 = _Material.diffuseColor;
 		alpha = _Material.opacity;
 	}
+	if (alpha < 0.05)
+		discard;
+
 	vec3 finalFragColor = result * color3; 
+	vec3 R = reflect(camera, normalize(fs_in.WorldNormal));
 	
-	FragColor = vec4(finalFragColor, alpha);
+	float reflectivity = _Material.shininess/1500.0;
+
+	FragColor = vec4(finalFragColor+(texture(_Skybox, R).rgb*reflectivity), alpha);
+
+	float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+	
+	if (brightness > 1.0)
+		BrightColor = vec4(FragColor.rgb, 1.0);
+	else
+		BrightColor = vec4(0.0,0.0,0.0,1.0);
 }

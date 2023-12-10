@@ -46,6 +46,15 @@ namespace vg3o {
 		float outerCutoff = 23.5f;
 	};
 
+	struct DirectionalLight {
+		ew::Vec3 direction = ew::Vec3(0.f, 0.f, 0.f);
+		float strength = 1.0f;
+
+		ew::Vec3 ambient;
+		ew::Vec3 diffuse;
+		ew::Vec3 specular;
+	};
+
 	inline ew::Vec3 getForwardVector(ew::Vec3 rotation) {
 		ew::Vec3 radianRot = rotation * ew::DEG2RAD;
 		return ew::Vec3(
@@ -70,15 +79,15 @@ namespace vg3o {
 			r = 255.f;
 		}
 		else {
-			r = 329.698727446 * pow(kelvin - 60, -0.1332047592);
-			r = ew::Clamp((r / 255.f), 0.0f, 1.0f);
+			r = 329.698727446f * pow((float)kelvin - 60.f, -0.1332047592f);
 		}
+		r = ew::Clamp((r / 255.f), 0.0f, 1.0f);
 		// green
 		if (kelvin <= 66) {
-			g = 99.4708025861 * log(kelvin) - 161.1195681661;
+			g = 99.4708025861f * log((float)kelvin) - 161.1195681661f;
 		}
 		else {
-			g = 288.1221695283 * pow(kelvin - 60, -0.0755148492);
+			g = 288.1221695283f * pow((float)kelvin - 60.f, -0.0755148492f);
 		}
 		g = ew::Clamp((g / 255.f), 0.0f, 1.0f);
 		// blue
@@ -89,9 +98,9 @@ namespace vg3o {
 			b = 0.f;
 		}
 		else {
-			b = 138.5177312231 * log(kelvin - 10) - 305.0447927307;
-			b = ew::Clamp((b / 255.f), 0.0f, 1.0f);
+			b = 138.5177312231f * log((float)kelvin - 10.f) - 305.0447927307f;
 		}
+		b = ew::Clamp((b / 255.f), 0.0f, 1.0f);
 
 		return ew::Vec3(r, g, b);
 	}

@@ -35,6 +35,10 @@ namespace ew {
 			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)(offsetof(Vertex, uv)));
 			glEnableVertexAttribArray(2);
 
+			// tangent attribute
+			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)(offsetof(Vertex, tangent)));
+			glEnableVertexAttribArray(3);
+
 			m_initialized = true;
 		}
 
@@ -72,7 +76,7 @@ namespace ew {
 	{
 		if (mTextures.size() > 0) {
 			unsigned int diffuseNum = 1;
-			unsigned int specularNum = 1;
+			unsigned int normalNum = 1;
 
 			for (unsigned int i = 0; i < mTextures.size(); i++) {
 				glActiveTexture(GL_TEXTURE0 + i);
@@ -81,10 +85,10 @@ namespace ew {
 				if (name == "texture_diffuse") {
 					number = std::to_string(diffuseNum++);
 				}
-				else if (name == "texture_specular") {
-					number = std::to_string(specularNum++); 
+				else if (name == "texture_normal") {
+					number = std::to_string(normalNum++); 
 				}
-				shader.setInt("texture_diffuse1", i);
+				shader.setInt(name + number, i);
 				glBindTexture(GL_TEXTURE_2D, mTextures[i].id);
 			}
 			glActiveTexture(GL_TEXTURE0);
