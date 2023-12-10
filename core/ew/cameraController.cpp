@@ -1,6 +1,9 @@
 #include "cameraController.h"
+#include <iostream>
 namespace ew {
 	void CameraController::Move(GLFWwindow* window, ew::Camera* camera, float deltaTime) {
+		std::cout << "pitch: " << pitch << std::endl;
+		std::cout << "yaw: " << yaw << std::endl;
 		//Only allow movement if right mouse is held
 		if (!glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2)) {
 			//Release cursor

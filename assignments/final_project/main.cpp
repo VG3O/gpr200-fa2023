@@ -37,8 +37,6 @@ ew::Vec3 bgColor = ew::Vec3(0.1f);
 ew::Camera camera;
 ew::CameraController cameraController;
 
-
-
 int main() {
 	printf("Initializing...");
 	if (!glfwInit()) {
@@ -83,24 +81,28 @@ int main() {
 	ew::Shader screenShader("assets/screen.vert", "assets/screen.frag");
 	ew::Shader blurShader("assets/blur.vert", "assets/blur.frag");
 
-	//Create cube
-	ew::Mesh cubeMesh(ew::createCube(1.0f));
-	ew::Mesh planeMesh(ew::createPlane(5.0f, 5.0f, 10));
-	ew::Mesh sphereMesh(ew::createSphere(0.5f, 64));
-	ew::Mesh cylinderMesh(ew::createCylinder(0.5f, 1.0f, 32));
-
 	resetCamera(camera,cameraController);
 
-	vg3o::Light pointLights[MAX_LIGHTS]; 
+	vg3o::Light pointLights[MAX_LIGHTS];
+	int pointLightTemperature[MAX_LIGHTS];
+	for (int i = 0; i < MAX_LIGHTS; i++) {
+		pointLightTemperature[i] = 5000;
+	}
+
 	vg3o::SpotLight spotLights[MAX_LIGHTS];
 	vg3o::DirectionalLight sun;
-	sun.ambient = vg3o::GetTemperatureColor(5500);
-	sun.diffuse = vg3o::GetTemperatureColor(5500);
-	sun.specular = vg3o::GetTemperatureColor(5500);
+
+	const float lightPosition = 3.0f;
+
+	int sunColor = 5500;
+	sun.ambient = vg3o::GetTemperatureColor(sunColor);
+	sun.diffuse = vg3o::GetTemperatureColor(sunColor);
+	sun.specular = vg3o::GetTemperatureColor(sunColor);
 	sun.direction = ew::Vec3(-1.0f, -1.0f, 0.0f);
 
 	// car lights
-	vg3o::SpotLight headlights[8];
+	// muddies code but i didnt want to do this iteravely
+	vg3o::SpotLight headlights[10];
 	
 	headlights[0].position = ew::Vec3(-0.63f, -0.36f, -2.49f);
 	headlights[1].position = ew::Vec3(-0.78f, -0.33f, -2.63f);
@@ -108,47 +110,57 @@ int main() {
 	headlights[3].position = ew::Vec3(-0.69f, -0.34f, -2.41f);
 	headlights[4].position = ew::Vec3(-0.76f, -0.31f, -2.57f);
 
+	headlights[5].position = ew::Vec3(0.63f, -0.36f, -2.49f);
+	headlights[6].position = ew::Vec3(0.78f, -0.33f, -2.63f);
+	headlights[7].position = ew::Vec3(0.77f, -0.12f, -2.46f);
+	headlights[8].position = ew::Vec3(0.69f, -0.34f, -2.41f);
+	headlights[9].position = ew::Vec3(0.76f, -0.31f, -2.57f);
+
 	headlights[0].rotation = ew::Vec3(-6.0f, -256.0f, 0.0f);
 	headlights[1].rotation = ew::Vec3(-4.0f, -271.0f, 0.0f);
 	headlights[2].rotation = ew::Vec3(-29.0f, 91.0f, 0.0f);
 	headlights[3].rotation = ew::Vec3(-10.0f, 97.0f, 0.0f);
 	headlights[4].rotation = ew::Vec3(-13.0f, -280.0f, 0.0f);
+	
+	headlights[5].rotation = ew::Vec3(-6.0f, -288.0f, 0.0f);
+	headlights[6].rotation = ew::Vec3(-4.0f, -270.0f, 0.0f);
+	headlights[7].rotation = ew::Vec3(-29.0f, 90.0f, 0.0f);
+	headlights[8].rotation = ew::Vec3(-10.0f, 84.0f, 0.0f);
+	headlights[9].rotation = ew::Vec3(-13.0f, -259.0f, 0.0f);
 
-	headlights[0].color = vg3o::GetTemperatureColor(3750);
-	headlights[1].color = vg3o::GetTemperatureColor(3750);
-	headlights[2].color = vg3o::GetTemperatureColor(3750);
-	headlights[3].color = vg3o::GetTemperatureColor(3750);
-	headlights[4].color = vg3o::GetTemperatureColor(3750);
+	int headlightColor = 3750;
 
-	headlights[0].strength = 417.0f;
-	headlights[1].strength = 304.0f;
-	headlights[2].strength = 524.0f;
-	headlights[3].strength = 565.0f;
-	headlights[4].strength = 1000.0f;
+	for (int i = 0; i < 10; i++) {
+		headlights[i].color = vg3o::GetTemperatureColor(headlightColor);
+		headlights[i].cutoff = 1.0f;
+		headlights[i].range = 1.0f;
+	}
 
-	headlights[0].cutoff = 1.0f;
-	headlights[1].cutoff = 1.0f;
-	headlights[2].cutoff = 1.0f;
-	headlights[3].cutoff = 1.0f;
-	headlights[4].cutoff = 1.0f;
+	headlights[0].strength = 116.0f;
+	headlights[1].strength = 181.0f;
+	headlights[2].strength = 130.0f;
+	headlights[3].strength = 164.0f;
+	headlights[4].strength = 64.0f;
+
+	headlights[5].strength = 116.0f;
+	headlights[6].strength = 181.0f;
+	headlights[7].strength = 130.0f;
+	headlights[8].strength = 164.0f;
+	headlights[9].strength = 64.0f;
 	
 	headlights[0].outerCutoff = 10.0f;
 	headlights[1].outerCutoff = 9.0f;
 	headlights[2].outerCutoff = 11.5f;
 	headlights[3].outerCutoff = 16.0f;
 	headlights[4].outerCutoff = 9.0f;
+	
+	headlights[5].outerCutoff = 10.0f;
+	headlights[6].outerCutoff = 9.0f;
+	headlights[7].outerCutoff = 11.5f;
+	headlights[8].outerCutoff = 16.0f;
+	headlights[9].outerCutoff = 9.0f;
 
-	headlights[0].range = 1.0f;
-	headlights[1].range = 1.0f;
-	headlights[2].range = 1.0f;
-	headlights[3].range = 1.0f;
-	headlights[4].range = 1.0f;
-
-
-	spotLights[0].position = ew::Vec3(2.0f, 1.5f, 0.0f);
-	spotLights[0].rotation = ew::Vec3(0.0f, 0.0f, 0.0f);
-	int activePointLights = 1;
-	int activeSpotLights = 1;
+	int activePointLights = 6;
 
 	vg3o::Model newModel("assets/cars/gtr/gtr-exported.obj");
 
@@ -157,23 +169,18 @@ int main() {
 
 	// light source meshes
 	ew::Mesh lightSources[MAX_LIGHTS];
-	ew::Mesh spotLightSources[MAX_LIGHTS];
 
 	ew::Transform lightSourceTransforms[MAX_LIGHTS];
-	ew::Transform spotLightSourceTransforms[MAX_LIGHTS];
 
-	ew::Vec3 sourceOffset = ew::Vec3(90.0f, 0.0f, 90.0f);
 	for (int i = 0; i < MAX_LIGHTS; i++) {
 		lightSources[i] = ew::Mesh(ew::createSphere(0.1f, 32));
 		pointLights[i].color = ew::Vec3(1, 1, 1);
+		pointLights[i].strength = 4.0f;
+		pointLights[i].radius = 2.5f;
 	}
-	for (int i = 0; i < MAX_LIGHTS; i++) {
-		spotLightSources[i] = ew::Mesh(ew::createCylinder(0.1f, 0.25f, 32));
-		spotLights[i].color = ew::Vec3(1, 1, 1);
-	}
+
 	//------------------------
 	// skybox setup
-	float exposure = 2.0f;
 	float skyboxVertices[] = {
 		// positions          
 		-1.0f,  1.0f, -1.0f,
@@ -243,7 +250,9 @@ int main() {
 	//------------------------------------------
 	
 	//------------------------------------------
-	// set up the ground texture (this is the only object in the scene that will use normal mapping)
+	// set up the ground texture
+	// this plane uses normal mapping
+	// configured procGen.h to generate tangents for 
 	ew::MeshData groundData = vg3o::createPlane(150.0f, 150.0f, 1);
 	for (int i = 0; i < groundData.vertices.size(); i++) { groundData.vertices[i].uv *= 60.0f; }
 
@@ -273,6 +282,8 @@ int main() {
 
 	//-----------------------------------------------
 	// blur framebufffers
+	// this is used for bloom but until we take GPR-300 it is a very very very basic implementation
+	// it doesn't look the best it could but i'm happy I got it to work
 	unsigned int pingpongFBO[2];
 	unsigned int pingpongColorbuffers[2];
 	glGenFramebuffers(2, pingpongFBO);
@@ -281,7 +292,7 @@ int main() {
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[i]);
 		glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[i]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, SCREEN_WIDTH, SCREEN_WIDTH, 0, GL_RGB, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGB, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // we clamp to the edge as the blur filter would otherwise sample repeated texture values!
@@ -293,7 +304,7 @@ int main() {
 	}
 
 	//-----------------------------------------------
-	// cutscene setup
+	// cutscene setup (stretch goal but not finishing it for this)
 
 	float tweenTime = 0;
 	bool reverse = true;
@@ -312,6 +323,8 @@ int main() {
 
 	cutscene.AddEvent(newEvent);
 
+	//-----------------------------------------------
+	// configure shaders
 	shader.use();
 	shader.setInt("_Skybox", 10);
 
@@ -330,6 +343,16 @@ int main() {
 
 	vg3o::ScreenBuffer framebuffer(SCREEN_WIDTH, SCREEN_HEIGHT);
 	
+	// active booleans
+	bool headlightsActive = false;
+	bool bloom = false;
+	
+	camera.position = ew::Vec3(-8.113f, 3.866f, -11.319f);
+	camera.target = ew::Vec3(-7.499f, 3.584f, -10.582f);
+	camera.fov = 17.812f;
+
+	cameraController.pitch = -16.3f;
+	cameraController.yaw = 140.1f;
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -365,25 +388,45 @@ int main() {
 		if (tweenTime >= 1.25f) { tweenTime = 0.0f; reverse = !reverse; }
 
 		// light setup
+
+		// start with the sun (directional light)
+		sun.ambient = vg3o::GetTemperatureColor(sunColor);
+		sun.diffuse = vg3o::GetTemperatureColor(sunColor);
+		sun.specular = vg3o::GetTemperatureColor(sunColor);
+
 		shader.setVec3("_Sun.direction", sun.direction);
 		shader.setFloat("_Sun.strength", sun.strength);
 		shader.setVec3("_Sun.ambient", sun.ambient);
 		shader.setVec3("_Sun.diffuse", sun.diffuse);
 		shader.setVec3("_Sun.specular", sun.specular);
 
-		for (int i = 0; i < 5; i++) {
+		shader.setInt("_HeadlightsActive", headlightsActive);
+
+		for (int i = 0; i < 10; i++) {
+			headlights[i].color = vg3o::GetTemperatureColor(headlightColor);
+		}
+
+		for (int i = 0; i < 10; i++) {
 			std::string headlightStr = "_Headlights[" + std::to_string(i) + "]";
 			shader.setVec3(headlightStr + ".position", headlights[i].position);
 			shader.setVec3(headlightStr + ".direction", vg3o::getForwardVector(headlights[i].rotation));
 			shader.setVec3(headlightStr + ".color", headlights[i].color);
 			shader.setFloat(headlightStr + ".strength", headlights[i].strength);
 			shader.setFloat(headlightStr + ".cutoff", cos(headlights[i].cutoff * ew::DEG2RAD));
-			shader.setFloat(headlightStr + ".outerCutoff", cos(headlights[i].outerCutoff* ew::DEG2RAD));
+			shader.setFloat(headlightStr + ".outerCutoff", cos(headlights[i].outerCutoff * ew::DEG2RAD));
 			shader.setFloat(headlightStr + ".range", headlights[i].range);
 		}
 
 		shader.setInt("_PointLightAmount", activePointLights);
+
 		for (int i = 0; i < activePointLights; i++) {
+			pointLights[i].position = ew::Vec3(
+				lightPosition * cos(time + i), 
+				1.0f, 
+				lightPosition * sin(time + i)
+			);
+			pointLights[i].color = vg3o::GetTemperatureColor(pointLightTemperature[i]);
+
 			shader.setVec3("_PointLights[" + std::to_string(i) + "].position", pointLights[i].position);
 			shader.setVec3("_PointLights[" + std::to_string(i) + "].color", pointLights[i].color);
 			shader.setFloat("_PointLights[" + std::to_string(i) + "].strength", pointLights[i].strength);
@@ -403,14 +446,6 @@ int main() {
 			unlitShader.setVec3("_Color", pointLights[i].color);
 			lightSources[i].draw();
 		}
-		for (int i = 0; i < activeSpotLights; i++) {
-			spotLightSourceTransforms[i].position = spotLights[i].position;
-			spotLightSourceTransforms[i].rotation = sourceOffset + -spotLights[i].rotation;
-			unlitShader.setMat4("_Model", spotLightSourceTransforms[i].getModelMatrix());
-			unlitShader.setVec3("_Color", spotLights[i].color);
-			spotLightSources[i].draw();
-		}
-
 		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 		skyboxShader.use(); // remove translation from the view matrix so that the skybox looks infinite
 		skyboxShader.setMat4("_View", camera.ViewMatrix());
@@ -430,7 +465,7 @@ int main() {
 		bool horizontal = true, first_iteration = true;
 		std::vector<unsigned int> colorBuffers = framebuffer.getColorBuffers();
 		// how many times to render the blur
-		unsigned int amount = 10;
+		unsigned int amount = 6;
 		blurShader.use();
 		glActiveTexture(GL_TEXTURE0);
 		for (unsigned int i = 0; i < amount; i++)
@@ -449,6 +484,7 @@ int main() {
 
 		
 		screenShader.use();
+		screenShader.setInt("_BloomActive", bloom);
 		glDisable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glActiveTexture(GL_TEXTURE0);
@@ -482,40 +518,37 @@ int main() {
 					resetCamera(camera, cameraController);
 				}
 			}
-			ImGui::DragFloat("Exposure", &exposure, 0.05f, 1.0f, 10.0f);
-			ImGui::PushID(0);
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Text("Lighting Settings");;
+			ImGui::Checkbox("Bloom", &bloom);
+			ImGui::SliderInt("Light Amount", &activePointLights, 1, MAX_LIGHTS);
 			if (ImGui::CollapsingHeader("Sun Settings")) {
-				ImGui::DragFloat3("Position", &sun.direction.x, 0.01f, -1.0f, 1.0f);
+				ImGui::DragFloat3("Direction", &sun.direction.x, 0.01f, -1.0f, 1.0f);
 				ImGui::DragFloat("Strength", &sun.strength, 0.01f, 0.0f, 1.0f);
+				ImGui::SliderInt("Temperature", &sunColor, 2500, 13500);
 			}
-			ImGui::PopID();
-
-			ImGui::SliderInt("Point Light Amount", &activePointLights, 0, MAX_LIGHTS);
-			ImGui::SliderInt("Spot Light Amount", &activeSpotLights, 0, MAX_LIGHTS);
-			for (int i = 0; i < activePointLights; i++) {
-				std::string str = "Point Light " + std::to_string(i);
-				ImGui::PushID(i + 1);
-				if (ImGui::CollapsingHeader(str.c_str())) {
-					ImGui::DragFloat3("Position", &pointLights[i].position.x, 0.01f);
-					ImGui::DragFloat3("Color", &pointLights[i].color.x, 0.01f, 0.0f, 1.0f);
-					ImGui::DragFloat("Strength", &pointLights[i].strength, 0.01f, 0.0f, 1000.0f);
-					ImGui::DragFloat("Radius", &pointLights[i].radius, 0.05f, 0.05f, 10.0f);
+			if (ImGui::CollapsingHeader("Moving Light Settings")) {
+				ImGui::Indent();
+				for (int i = 0; i < activePointLights; i++) {
+					std::string str = "Light " + std::to_string(i + 1);
+					ImGui::PushID(i);
+					if (ImGui::CollapsingHeader(str.c_str())) {
+						ImGui::SliderInt("Temperature", &pointLightTemperature[i], 2500, 13500);
+						ImGui::SliderFloat("Strength", &pointLights[i].strength, 1.0f, 20.0f);
+						ImGui::SliderFloat("Radius", &pointLights[i].radius, 1.0f, 30.0f);
+					}
+					ImGui::Spacing();
+					ImGui::PopID();
 				}
-				ImGui::PopID();
+				ImGui::Unindent();
 			}
-			for (int i = 0; i < 5; i++) {
-				std::string str = "Headlight " + std::to_string(i);
-				ImGui::PushID(i + 1 + activePointLights);
-				if (ImGui::CollapsingHeader(str.c_str())) {
-					ImGui::DragFloat3("Position", &headlights[i].position.x, 0.01f);
-					ImGui::DragFloat3("Rotation", &headlights[i].rotation.x, 1.0f);
-					ImGui::DragFloat("Strength", &headlights[i].strength, 1.0f, 0.0f, 1000.0f);
-					ImGui::DragFloat("Range", &headlights[i].range, 0.05f, 0.05f, 15.0f);
-					ImGui::DragFloat("Inner Cutoff", &headlights[i].cutoff, 0.5f, 1.0f, 90.0f);
-					ImGui::DragFloat("Outer Cutoff", &headlights[i].outerCutoff, 0.5f, 1.0f, 90.0f);
-
+			if (ImGui::CollapsingHeader("Car Settings")) {
+				ImGui::Checkbox("Headlights", &headlightsActive);
+				if (headlightsActive) {
+					ImGui::SliderInt("Headlight Temperature", &headlightColor, 2500, 13500);
 				}
-				ImGui::PopID();
 			}
 
 			ImGui::ColorEdit3("BG color", &bgColor.x);

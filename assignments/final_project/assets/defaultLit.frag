@@ -65,8 +65,11 @@ struct Material{
 #define MAX_LIGHTS 6
 uniform Light _PointLights[MAX_LIGHTS];
 uniform SpotLight _SpotLights[MAX_LIGHTS];
-uniform SpotLight _Headlights[5];
+uniform SpotLight _Headlights[10];
 uniform DirectionalLight _Sun;
+
+// active variables
+uniform bool _HeadlightsActive;
 
 // material uniform
 uniform Material _Material;
@@ -209,8 +212,10 @@ void main(){
 	for(int i = 0; i < _SpotLightAmount; i++) {
 		result += MakeSpotLight(_SpotLights[i], _Material, camera, normal, fs_in.WorldPosition);
 	}
-	for(int i = 0; i < 5; i++) {
-		result += MakeSpotLight(_Headlights[i], _Material, camera, normal, fs_in.WorldPosition);
+	if (_HeadlightsActive) {
+		for(int i = 0; i < 10; i++) {
+			result += MakeSpotLight(_Headlights[i], _Material, camera, normal, fs_in.WorldPosition);
+		}
 	}
 
 	vec4 color;
